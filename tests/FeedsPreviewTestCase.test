@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Contains FeedsPreviewTestCase.
+ */
+
+/**
+ * Base class for FeedsPreview tests.
+ */
+abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp($modules = array()) {
+    $modules[] = 'feedspreview';
+    $modules = array_unique($modules);
+    parent::setUp($modules);
+  }
+
+  /**
+   * Overrides FeedsWebTestCase::absolutePath().
+   *
+   * Returns absolute path to FeedsPreview module instead.
+   */
+  public function absolutePath() {
+    return $this->absolute() . '/' . drupal_get_path('module', 'feedspreview');
+  }
+
+  /**
+   * Import a file through the preview import form.
+   *
+   * Assumes FeedsFileFetcher in place.
+   */
+  public function previewImportFile($id, $file) {
+    $this->assertTrue(file_exists($file), 'Source file exists');
+    $edit = array(
+      'files[feeds]' => $file,
+    );
+    $this->drupalPost('admin/structure/feeds/' . $id . '/preview', $edit, 'Preview import');
+  }
+}

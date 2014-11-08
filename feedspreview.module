@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * Feeds Import Preview module.
+ *
+ * Preview the feeds source content before importing.
+ */
+
+/**
+ * Location of Feeds importer id in path on feeds importer configuration pages.
+ *
+ * @var int
+ */
+define('FEEDSPREVIEW_IMPORTER_ARG', 3);
+
+/**
+ * Location of active "menu item" in path on feeds importer configuration pages.
+ *
+ * @var int
+ */
+define('FEEDSPREVIEW_ACTIVE_ARG', 4);
+
+/**
+ * Implements hook_menu().
+ */
+function feedspreview_menu() {
+  $items = array();
+
+  $items['import/%/preview'] = array(
+    'title' => 'Import preview',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('feedspreview_form', 1),
+    'access callback' => 'feeds_access',
+    'access arguments' => array('import', 1),
+    'file' => 'feedspreview.pages.inc',
+    'type' => MENU_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for feeds_ui_edit_page().
+ *
+ * Adds "Preview" section to Feeds edit page.
+ */
+function feedspreview_preprocess_feeds_ui_edit_page(&$variables) {
+  $importer = feeds_importer_load(arg(FEEDSPREVIEW_IMPORTER_ARG));
+  $active = arg(FEEDSPREVIEW_ACTIVE_ARG);
+  $path = 'admin/structure/feeds/' . $importer->id;
+
+  switch ($active) {
+    case 'preview':
+      module_load_include('pages.inc', 'feedspreview');
+      $variables['active']['title'] = t('Import preview');
+      $variables['active']['body'] = drupal_get_form('feedspreview_form', $importer->id);
+      break;
+  }
+
+  $variables['info']['preview'] = array(
+    'class' => array('config-set'),
+    'title' => t('Preview'),
+    'body' => array(
+      array(
+        'body' => t('Show a preview of the import.'),
+        'actions' => array(
+          l(t('Import preview'), $path . '/preview'),
+        ),
+      ),
+    ),
+    'actions' => array(),
+  );
+}
