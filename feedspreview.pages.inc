@@ -70,7 +70,12 @@ function feedspreview_form_submit($form, &$form_state) {
     $source->save();
   }
 
-  $form_state['feeds_parser_result'] = $source->preview();
+  try {
+    $form_state['feeds_parser_result'] = $source->preview();
+  }
+  catch (Exception $e) {
+    drupal_set_message($e->getMessage(), 'error');
+  }
   $form_state['rebuild'] = TRUE;
 }
 
