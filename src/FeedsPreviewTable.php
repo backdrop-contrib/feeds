@@ -363,7 +363,7 @@ class FeedsPreviewTable {
           ),
         );
       }
-      if (!empty($value) || $value === 0) {
+      if (!empty($value) || $value === 0 || $value === '0') {
         $table['#rows'][$key]['data']['value']['data'] = $this->outputValue($value);
       }
     }
