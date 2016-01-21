@@ -30,10 +30,15 @@ class FeedsPreviewNoImportTest extends FeedsPreviewTestCase {
     // Create and configure importer.
     // Set to run import process as often as possible.
     $this->createImporterConfiguration('Content CSV', 'csv');
-    $this->setSettings('csv', NULL, array('content_type' => '', 'import_period' => 0));
+    $this->setSettings('csv', NULL, array(
+      'content_type' => '',
+      'import_period' => 0,
+    ));
     $this->setPlugin('csv', 'FeedsFileFetcher');
     $this->setPlugin('csv', 'FeedsCSVParser');
-    $this->setSettings('csv', 'FeedsNodeProcessor', array('bundle' => $content_type->type));
+    $this->setSettings('csv', 'FeedsNodeProcessor', array(
+      'bundle' => $content_type->type,
+    ));
     $this->addMappings('csv', array(
       0 => array(
         'source' => 'title',
@@ -50,7 +55,7 @@ class FeedsPreviewNoImportTest extends FeedsPreviewTestCase {
     ));
 
     // Trigger an import preview.
-    $this->previewImportFile('csv', $this->absolutePath() . '/tests/feeds/content.csv');
+    $this->previewImportFile('csv', $this->absolutePath() . '/tests/resources/content.csv');
 
     // Run cron.
     drupal_cron_run();

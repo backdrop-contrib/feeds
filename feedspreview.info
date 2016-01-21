@@ -7,5 +7,5 @@ files[] = src/FeedsPreviewSource.php
 files[] = src/FeedsPreviewTable.php
 
 ; Tests
-files[] = tests/FeedsPreviewTestCase.test
-files[] = tests/FeedsPreviewNoImportTest.test
+files[] = tests/src/FeedsPreviewTestCase.test
+files[] = tests/src/FeedsPreviewNoImportTest.test
