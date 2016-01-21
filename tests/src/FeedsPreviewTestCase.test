@@ -39,4 +39,26 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
     );
     $this->drupalPost('admin/structure/feeds/' . $id . '/preview', $edit, 'Preview import');
   }
+
+  /**
+   * Asserts number of nodes.
+   */
+  public function assertNodeCount($expected, $message = NULL) {
+    if (is_null($message)) {
+      $message = 'There are @expected nodes (actual: @actual).';
+    }
+
+    $actual = db_select('node')
+      ->fields('node', array('nid'))
+      ->countQuery()
+      ->execute()
+      ->fetchField();
+
+    $message = format_string($message, array(
+      '@expected' => $expected,
+      '@actual' => $actual,
+    ));
+
+    $this->assertEqual($expected, $actual, $message);
+  }
 }

@@ -61,13 +61,6 @@ class FeedsPreviewNoImportTest extends FeedsPreviewTestCase {
     drupal_cron_run();
 
     // Assert that no nodes were created.
-    $count = (int) db_select('node')
-      ->fields('node', array('nid'))
-      ->countQuery()
-      ->execute()
-      ->fetchField();
-    $this->assertEqual($count, 0, format_string('No nodes were imported (actual: @actual).', array(
-      '@actual' => $count,
-    )));
+    $this->assertNodeCount(0, 'No nodes were imported (actual: @actual).');
   }
 }
