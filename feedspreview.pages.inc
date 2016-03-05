@@ -14,6 +14,9 @@
 function feedspreview_form($form, &$form_state, $importer_id) {
   $source = FeedsPreviewSource::instance($importer_id, 0);
 
+  // Set flag that this form is viewed in the admin interface.
+  $form_state['admin_preview'] = TRUE;
+
   $form = array();
   $form['#importer_id'] = $importer_id;
   $form['#attributes']['enctype'] = 'multipart/form-data';
@@ -46,6 +49,34 @@ function feedspreview_form($form, &$form_state, $importer_id) {
 }
 
 /**
+ * Returns preview results array.
+ *
+ * @param string $importer_id
+ *   The ID of the importer.
+ * @param FeedsParserResult $result
+ *   The parser result.
+ *
+ * @return array
+ *   Markup for previewing the results.
+ */
+function feedspreview_show_result_on_form($importer_id, $result) {
+  $field = array(
+    '#type' => 'fieldset',
+    '#title' => t('Preview'),
+    '#weight' => -50,
+  );
+
+  $field['help'] = array(
+    '#markup' => '<p>' . t('This will give you a brief look of what the parsed result looks like (thus before the data is processed). Note that the data may be modified during processing. If your browser supports it, you can use the left and right arrow keys on your keyboard to navigate between the results.') . '</p>',
+  );
+
+  $source = FeedsPreviewSource::instance($importer_id, 0);
+  $field['result'] = feedspreview_table($source, $result);
+
+  return $field;
+}
+
+/**
  * Form validation handler for feedspreview_form().
  *
  * @see feedspreview_form()
@@ -56,18 +87,20 @@ function feedspreview_form_validate($form, &$form_state) {
 }
 
 /**
- * Form submission handler for path_admin_form().
+ * Form submission handler for feedspreview_form().
  *
  * @see feedspreview_form()
  * @see feedspreview_form_validate()
  */
 function feedspreview_form_submit($form, &$form_state) {
-  // Save source and import.
   $source = FeedsPreviewSource::instance($form['#importer_id'], 0);
 
   if (!empty($form_state['values']['feeds']) && is_array($form_state['values']['feeds'])) {
     $source->addConfig($form_state['values']['feeds']);
-    $source->save();
+    if (!empty($form_state['admin_preview'])) {
+      // Save source only when using the preview form on the importer configuration.
+      $source->save();
+    }
   }
 
   try {

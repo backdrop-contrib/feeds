@@ -55,7 +55,7 @@ class FeedsPreviewNoImportTest extends FeedsPreviewTestCase {
     ));
 
     // Trigger an import preview.
-    $this->previewImportFile('csv', $this->absolutePath() . '/tests/resources/content.csv');
+    $this->previewImportFile('admin/structure/feeds/csv/preview', NULL, array(), 'Preview import');
 
     // Run cron.
     drupal_cron_run();

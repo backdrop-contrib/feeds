@@ -22,25 +22,6 @@ define('FEEDSPREVIEW_IMPORTER_ARG', 3);
 define('FEEDSPREVIEW_ACTIVE_ARG', 4);
 
 /**
- * Implements hook_menu().
- */
-function feedspreview_menu() {
-  $items = array();
-
-  $items['import/%/preview'] = array(
-    'title' => 'Import preview',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('feedspreview_form', 1),
-    'access callback' => 'feeds_access',
-    'access arguments' => array('import', 1),
-    'file' => 'feedspreview.pages.inc',
-    'type' => MENU_LOCAL_TASK,
-  );
-
-  return $items;
-}
-
-/**
  * Implements hook_preprocess_HOOK() for feeds_ui_edit_page().
  *
  * Adds "Preview" section to Feeds edit page.
@@ -70,5 +51,30 @@ function feedspreview_preprocess_feeds_ui_edit_page(&$variables) {
       ),
     ),
     'actions' => array(),
+  );
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for form feeds_import_form().
+ *
+ * Adds preview button to the form.
+ */
+function feedspreview_form_feeds_import_form_alter(&$form, &$form_state) {
+  // Load feedspreview.pages.inc along with the form.
+  form_load_include($form_state, 'inc', 'feedspreview', 'feedspreview.pages');
+
+  if (isset($form_state['feeds_parser_result'])) {
+    $form['feedspreview'] = feedspreview_show_result_on_form($form['#importer_id'], $form_state['feeds_parser_result']);
+
+    // Replace source form to support file fetcher.
+    $source = FeedsPreviewSource::instance($form['#importer_id'], 0);
+    $source_form = $source->configForm($form_state);
+    $form['feeds'] = array_merge($form['feeds'], $source_form);
+  }
+
+  $form['actions']['preview'] = array(
+    '#type' => 'submit',
+    '#value' => t('Preview'),
+    '#submit' => array('feedspreview_form_submit'),
   );
 }
