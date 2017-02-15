@@ -127,6 +127,13 @@ class FeedsPreviewTable {
     $targets = $this->feedsSource->importer->processor->getMappingTargets();
     $mappings = $this->feedsSource->importer->processor->getMappings();
 
+    // In case of the CSV parser, the source keys are converted to lowercase.
+    // Loop through to the source list from the parser to fix the mapping
+    // information.
+    foreach ($this->feedsSource->importer->parser->getMappingSourceList() as $index => $source_key) {
+      $mappings[$index]['source'] = $source_key;
+    }
+
     $rows = array();
 
     // Create the base table.
