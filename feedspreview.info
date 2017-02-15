@@ -3,6 +3,9 @@ description = Preview the feeds source content before importing.
 package = Feeds
 core = 7.x
 dependencies[] = feeds
+
+test_dependencies[] = feeds_tamper:feeds_tamper
+
 files[] = src/FeedsPreviewSource.php
 files[] = src/FeedsPreviewTable.php
 
