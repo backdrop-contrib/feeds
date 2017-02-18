@@ -138,10 +138,24 @@ class FeedsPreviewTable {
 
     // Create the base table.
     foreach ($mappings as $mapping) {
+      // Find source.
+      $source_name = $mapping['source'];
       // Some parsers do not define source options.
-      $source = isset($sources[$mapping['source']]['name']) ? $sources[$mapping['source']]['name'] : $mapping['source'];
-      if (isset($targets[$mapping['target']]['name'])) {
-        $target = check_plain($targets[$mapping['target']]['name']);
+      $source = isset($sources[$source_name]['name']) ? $sources[$source_name]['name'] : $mapping['source'];
+
+      // Find target.
+      if (isset($targets[$mapping['target']])) {
+        if (isset($targets[$mapping['target']]['name'])) {
+          $target = check_plain($targets[$mapping['target']]['name']);
+        }
+        else {
+          $target = check_plain($mapping['target']);
+        }
+        $mapped_css_class = 'feeds-preview-table-row-mapped';
+      }
+      elseif (strpos($mapping['target'], 'Temporary target ') === 0) {
+        // Feeds Tamper temporary target.
+        $target = check_plain($mapping['target']);
         $mapped_css_class = 'feeds-preview-table-row-mapped';
       }
       else {
@@ -149,8 +163,8 @@ class FeedsPreviewTable {
         $mapped_css_class = 'feeds-preview-table-row-not-mapped';
       }
 
-      if (!isset($rows[$mapping['source']])) {
-        $rows[$mapping['source']] = array(
+      if (!isset($rows[$source_name])) {
+        $rows[$source_name] = array(
           'data' => array(
             'source' => array(
               'data' => check_plain($source),
@@ -172,7 +186,7 @@ class FeedsPreviewTable {
         );
       }
       else {
-        $rows[$mapping['source']]['data']['target']['data'] .= '; ' . $target;
+        $rows[$source_name]['data']['target']['data'] .= '; ' . $target;
       }
     }
 
