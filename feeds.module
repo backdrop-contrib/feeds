@@ -753,7 +753,7 @@ function feeds_system_info_alter(array &$info, $file, $type) {
   // Get the plugins that belong to the current module.
   $module_plugins = array();
   foreach (feeds_get_plugins() as $plugin_id => $plugin) {
-    if ($file->name === $plugin['module']) {
+    if (array_key_exists('module', $plugin) && $file->name === $plugin['module']) {
       $module_plugins[$plugin_id] = TRUE;
     }
   }
