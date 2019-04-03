@@ -179,7 +179,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
     // Perform field validation if entity is fieldable.
     if (!empty($info['fieldable'])) {
       try {
-        field_attach_validate($this->entityType(), $entity);
+        $this->validateFields($entity);
       }
       catch (FieldValidationException $e) {
         $errors = array();
@@ -208,6 +208,66 @@ abstract class FeedsProcessor extends FeedsPlugin {
         $message .= theme('item_list', array('items' => $errors));
         throw new FeedsValidationException($message);
       }
+    }
+  }
+
+  /**
+   * Validates fields of an entity.
+   *
+   * This is mostly a copy of the field_attach_validate() function. The
+   * difference is that field_attach_validate() validates *all* fields on an
+   * entity, while Feeds only validates the fields where the user mapped to.
+   *
+   * @param object $entity
+   *   The entity for which the field to validate.
+   *
+   * @throws FieldValidationException
+   *   If validation errors are found, a FieldValidationException is thrown. The
+   *   'errors' property contains the array of errors, keyed by field name,
+   *   language and delta.
+   */
+  protected function validateFields($entity) {
+    $entity_type = $this->entityType();
+
+    // Get fields for the entity type we are mapping to.
+    $fields = field_info_instances($entity_type, $this->bundle());
+
+    // Get targets.
+    $targets = $this->getCachedTargets();
+
+    $errors = array();
+    $null = NULL;
+
+    // Validate all fields that we are mapping to.
+    foreach ($this->getMappings() as $mapping) {
+      // Get real target name.
+      if (isset($targets[$mapping['target']]['real_target'])) {
+        $target_name = $targets[$mapping['target']]['real_target'];
+      }
+      else {
+        $target_name = $mapping['target'];
+      }
+
+      if (isset($fields[$target_name])) {
+        // Validate this field.
+        _field_invoke_default('validate', $entity_type, $entity, $errors, $null, array(
+          'field_name' => $target_name,
+        ));
+        _field_invoke('validate', $entity_type, $entity, $errors, $null, array(
+          'field_name' => $target_name,
+        ));
+      }
+    }
+
+    // Let other modules validate the entity.
+    // Avoid module_invoke_all() to let $errors be taken by reference.
+    foreach (module_implements('field_attach_validate') as $module) {
+      $function = $module . '_field_attach_validate';
+      $function($entity_type, $entity, $errors);
+    }
+
+    if ($errors) {
+      throw new FieldValidationException($errors);
     }
   }
 

@@ -317,6 +317,41 @@ class FeedsMapperLinkTestCase extends FeedsMapperTestCase {
   }
 
   /**
+   * Tests link field validation.
+   */
+  public function testLinkFieldValidation() {
+    // Create and configure importer.
+    $this->createImporterConfiguration('CSV', 'csv');
+    $this->setSettings('csv', NULL, array(
+      'content_type' => '',
+      'import_period' => FEEDS_SCHEDULE_NEVER,
+    ));
+    $this->setPlugin('csv', 'FeedsFileFetcher');
+    $this->setPlugin('csv', 'FeedsCSVParser');
+    $this->setSettings('csv', 'FeedsNodeProcessor', array(
+      'bundle' => $this->contentType,
+    ));
+    $this->addMappings('csv', array(
+      0 => array(
+        'source' => 'title',
+        'target' => 'title',
+      ),
+      1 => array(
+        'source' => 'alpha',
+        'target' => 'field_alpha:title'
+      ),
+      2 => array(
+        'source' => 'alpha',
+        'target' => 'field_alpha:url'
+      ),
+    ));
+    $this->importFile('csv', $this->absolutePath() . '/tests/feeds/content.csv');
+    $this->assertText('Failed importing 2 nodes.');
+    $this->assertText("Field validation errors in item 'Lorem ipsum'");
+    $this->assertText('The value Lorem provided for alpha_link_field_label is not a valid URL.');
+  }
+
+  /**
    * Override parent::getFormFieldsNames().
    */
   protected function getFormFieldsNames($field_name, $index) {
