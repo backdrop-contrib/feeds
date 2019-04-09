@@ -160,6 +160,9 @@ abstract class FeedsProcessor extends FeedsPlugin {
   /**
    * Validates an entity.
    *
+   * @param object $entity
+   *   The entity to validate.
+   *
    * @throws FeedsValidationException $e
    *   Thrown if validation fails.
    */
@@ -432,6 +435,9 @@ abstract class FeedsProcessor extends FeedsPlugin {
 
         // Set property and field values.
         $this->map($source, $parser_result, $entity);
+
+        // Allow modules to alter the entity before validating.
+        module_invoke_all('feeds_prevalidate', $source, $entity, $item, $entity_id);
         $this->entityValidate($entity);
 
         // Allow modules to alter the entity before saving.

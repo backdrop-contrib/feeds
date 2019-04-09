@@ -31,6 +31,7 @@ function feeds_hook_info() {
     'feeds_after_parse',
     'feeds_before_import',
     'feeds_before_update',
+    'feeds_prevalidate',
     'feeds_presave',
     'feeds_after_save',
     'feeds_after_import',

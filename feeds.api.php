@@ -145,6 +145,31 @@ function hook_feeds_before_update(FeedsSource $source, $item, $entity_id) {
 }
 
 /**
+ * Invoked before a feed item is validated.
+ *
+ * @param FeedsSource $source
+ *   FeedsSource object that describes the source that is being imported.
+ * @param object $entity
+ *   The entity object.
+ * @param array $item
+ *   The parser result for this entity.
+ * @param int|null $entity_id
+ *   The id of the current item which is going to be updated. If this is a new
+ *   item, then NULL is passed.
+ */
+function hook_feeds_prevalidate(FeedsSource $source, $entity, $item, $entity_id) {
+  // Correct a field value to make it pass validation.
+  if (isset($entity->myfield)) {
+    foreach ($entity->myfield as $language => &$values) {
+      // There are only three values allowed. Throw away the rest.
+      if (count($values) > 3) {
+        $values = array_slice($values, 0, 3);
+      }
+    }
+  }
+}
+
+/**
  * Invoked before a feed item is saved.
  *
  * @param FeedsSource $source
