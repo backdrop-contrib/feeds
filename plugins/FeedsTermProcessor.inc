@@ -57,7 +57,7 @@ class FeedsTermProcessor extends FeedsProcessor {
   /**
    * Validates a term.
    */
-  protected function entityValidate($term) {
+  protected function entityValidate($term, FeedsSource $source = NULL) {
     parent::entityValidate($term);
 
     if (drupal_strlen($term->name) == 0) {

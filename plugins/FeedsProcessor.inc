@@ -162,11 +162,13 @@ abstract class FeedsProcessor extends FeedsPlugin {
    *
    * @param object $entity
    *   The entity to validate.
+   * @param FeedsSource $source
+   *   (optional) The source to import from.
    *
    * @throws FeedsValidationException $e
    *   Thrown if validation fails.
    */
-  protected function entityValidate($entity) {
+  protected function entityValidate($entity, FeedsSource $source = NULL) {
     $info = $this->entityInfo();
 
     if (!empty($info['entity keys']['language'])) {
@@ -438,7 +440,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
 
         // Allow modules to alter the entity before validating.
         module_invoke_all('feeds_prevalidate', $source, $entity, $item, $entity_id);
-        $this->entityValidate($entity);
+        $this->entityValidate($entity, $source);
 
         // Allow modules to alter the entity before saving.
         module_invoke_all('feeds_presave', $source, $entity, $item, $entity_id);

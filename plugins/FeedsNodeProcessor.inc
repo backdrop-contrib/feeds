@@ -144,9 +144,7 @@ class FeedsNodeProcessor extends FeedsProcessor {
   /**
    * Validates a node.
    */
-  protected function entityValidate($entity) {
-    parent::entityValidate($entity);
-
+  protected function entityValidate($entity, FeedsSource $source = NULL) {
     // Set or correct user ID.
     if (!isset($entity->uid) || !is_numeric($entity->uid)) {
       $entity->uid = $this->config['author'];
@@ -156,6 +154,28 @@ class FeedsNodeProcessor extends FeedsProcessor {
       // DrupalDefaultEntityController::load() which occur when an user ID is
       // not an integer nor a string.
       $entity->uid = (int) $entity->uid;
+    }
+
+    // When the import should be authorized, make an extra account switch.
+    if ($source && $this->config['authorize'] && !empty($entity->uid)) {
+      $author = user_load($entity->uid);
+      $switcher = $source->accountSwitcher->switchTo($author);
+    }
+
+    try {
+      parent::entityValidate($entity, $source);
+    }
+    catch (Exception $e) {
+      // Catch any exceptions, throw these at the end.
+    }
+
+    // When an user switch happened because of an authorized import, be sure to
+    // switch back to the previous logged in account.
+    if (!empty($switcher)) {
+      $switcher->switchBack();
+    }
+    if (!empty($e)) {
+      throw $e;
     }
   }
 

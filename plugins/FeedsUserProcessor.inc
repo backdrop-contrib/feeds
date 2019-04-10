@@ -99,7 +99,7 @@ class FeedsUserProcessor extends FeedsProcessor {
   /**
    * Validates a user account.
    */
-  protected function entityValidate($account) {
+  protected function entityValidate($account, FeedsSource $source = NULL) {
     parent::entityValidate($account);
 
     if (empty($account->name) || empty($account->mail) || !valid_email_address($account->mail)) {

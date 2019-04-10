@@ -666,6 +666,23 @@ class FeedsWebTestCase extends DrupalWebTestCase {
   }
 
   /**
+   * Changes the author of a node and asserts the change in the UI.
+   *
+   * @param int $nid
+   *   The ID of the node to change author.
+   * @param object $account
+   *   The new author.
+   */
+  protected function changeNodeAuthor($nid, $account) {
+    $node = node_load($nid);
+    $node->uid = $account->uid;
+    node_save($node);
+    // Assert that author was in fact changed.
+    $this->drupalGet('node/' . $nid);
+    $this->assertText($account->name);
+  }
+
+  /**
    * Copies a directory.
    *
    * @param string $source
