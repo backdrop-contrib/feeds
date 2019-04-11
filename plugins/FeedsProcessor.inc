@@ -190,10 +190,8 @@ abstract class FeedsProcessor extends FeedsPlugin {
         $errors = array();
 
         // Unravel the errors inside the FieldValidationException.
-        foreach ($e->errors as $field_name => $field_errors) {
-          foreach ($field_errors as $langcode => $field_item_errors) {
-            $errors = array_merge($errors, $this->unravelFieldValidationExceptionErrors($field_item_errors));
-          }
+        foreach ($e->errors as $field_errors) {
+          $errors = array_merge($errors, $this->unravelFieldValidationExceptionErrors($field_errors));
         }
 
         // Compose error message. If available, use the entity label to indicate
@@ -285,7 +283,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
    * @return array
    *   The unraveled error messages.
    */
-  protected function unravelFieldValidationExceptionErrors($field_item_errors) {
+  protected function unravelFieldValidationExceptionErrors(array $field_item_errors) {
     $errors = array();
 
     foreach ($field_item_errors as $field_item_error) {

@@ -13,8 +13,8 @@ function feeds_test_field_field_schema($field) {
     'columns' => array(
       'value' => array(
         'type' => 'varchar',
-         'length' => 255,
-         'not null' => FALSE,
+        'length' => 255,
+        'not null' => FALSE,
       ),
     ),
   );

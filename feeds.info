@@ -70,6 +70,7 @@ files[] = tests/feeds_i18n.test
 files[] = tests/feeds_i18n_node.test
 files[] = tests/feeds_i18n_taxonomy.test
 files[] = tests/feeds_install.test
+files[] = tests/feeds_og.test
 files[] = tests/feeds_parser_csv.test
 files[] = tests/feeds_parser_sitemap.test
 files[] = tests/feeds_parser_syndication.test
