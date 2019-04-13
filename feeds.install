@@ -769,9 +769,14 @@ function feeds_update_7212() {
  * Set cache class for Feeds HTTP cache.
  */
 function feeds_update_7213() {
+  // Check if Feeds is enabled first.
+  if (!class_exists('FeedsHTTPCache') && !module_exists('feeds')) {
+    throw new DrupalUpdateException('Please enable the Feeds module to perform this update.');
+  }
+
   // Perform a registry rebuild so the system hopefully discovers the
   // FeedsHTTPCache class.
-  if (function_exists('registry_rebuild')) {
+  if (!class_exists('FeedsHTTPCache') && function_exists('registry_rebuild')) {
     registry_rebuild();
   }
 
