@@ -36,7 +36,7 @@ function locale_feeds_summary_callback(array $mapping, array $target, array $for
 
   $mapping += array('field_language' => LANGUAGE_NONE);
 
-  $language_options = array(LANGUAGE_NONE => t('Language neutral')) + language_list();
+  $language_options = array(LANGUAGE_NONE => t('Language neutral')) + language_list(FALSE, TRUE);
 
   $error = NULL;
   if ($mapping['field_language'] !== LANGUAGE_NONE && !$translatable) {
@@ -85,7 +85,7 @@ function locale_feeds_form_callback(array $mapping, array $target, array $form, 
   $language_options = array(LANGUAGE_NONE => t('Language neutral'));
 
   if (!$error) {
-    $language_options += language_list();
+    $language_options += language_list(FALSE, TRUE);
   }
 
   $form['field_language'] = array(
