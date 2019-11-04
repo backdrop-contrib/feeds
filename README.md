@@ -214,6 +214,7 @@ Maintainers
 -----------
 
 - Andy Shillingford (https://github.com/docwilmot/)
+- Herb v/d Dool (https://github.com/herbdool)
 
 Credits
 -------
