@@ -128,6 +128,7 @@ function feeds_ui_overview_form_submit($form, &$form_state) {
   $disabled = array();
   foreach (feeds_importer_load_all(TRUE) as $importer) {
     $disabled[$importer->id] = !$form_state['values'][$importer->id];
+    config_set('feeds.feeds_importer.' . $importer->id, 'disabled', !$form_state['values'][$importer->id]);
   }
   config_set('feeds.settings', 'default_feeds_importer', $disabled);
   feeds_cache_clear();

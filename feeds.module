@@ -1418,6 +1418,7 @@ function feeds_load_importer_object($importer_id = NULL) {
     $object->table = $table;
     $object->type = t('Normal');
     $object->export_type = EXPORT_IN_DATABASE;
+    $object->disabled = $data['disabled'];
 
     $cache[$object->id] = $object;
   }
