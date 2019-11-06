@@ -407,3 +407,14 @@ function feeds_update_1000() {
   update_variable_del('feeds_process_limit');
   update_variable_del('default_nodes_main');
 }
+
+/**
+ * Convert feeds_log View.
+ */
+function feeds_update_1002() {
+  $path = backdrop_get_path('module', 'webform') . '/config/';
+  $contents = file_get_contents($path . 'views.view.feeds_log.json');
+  $data = json_decode($contents, true);
+  $config->setData($data);
+  $config->save();
+}
