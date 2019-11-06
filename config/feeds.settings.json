@@ -1,24 +1,16 @@
 {
     "_config_name": "feeds.settings",
-    "feeds_reschedule": "FALSE",
-    "feeds_debug": "FALSE",
+    "feeds_reschedule": false,
+    "feeds_debug": false,
     "feeds_importer_class": "FeedsImporter",
-    "feeds_library_dir": "FALSE",
 
     "default_feeds_importer": "",
-    "menu_rebuild_needed": "TRUE",
     "feeds_source_class": "FeedsSource",
     "http_request_timeout": "30",
 
-    "proxy_server": "",
-    "proxy_port": "8080",
-    "proxy_username": "",
-    "proxy_password": "",
-
     "proxy_auth_method": "",
-    "feeds_never_use_curl": "FALSE",
+    "feeds_never_use_curl": false,
     "feeds_library_dir": "",
     "feeds_process_limit": "5",
-
-    "default_nodes_main": "20"
+    "feeds_use_mbstring": true
 }

@@ -86,7 +86,7 @@ class FeedsImporter extends FeedsConfigurable {
       // rebuilding menus when creating a new importer since it will default
       // to the standalone page.
       if ($config['content_type'] != $save->config['content_type']) {
-        config_set('feeds.settings', 'menu_rebuild_needed', TRUE);
+        state_set('menu_rebuild_needed', TRUE);
       }
     }
 

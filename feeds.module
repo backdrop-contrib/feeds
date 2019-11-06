@@ -223,7 +223,7 @@ function feeds_batch($method, $importer_id, $feed_nid = 0, &$context) {
  *   An list of importers that need rescheduling.
  */
 function feeds_reschedule($importer_id = NULL) {
-  $reschedule = config_get('feeds.settings', 'feeds_reschedule');
+  $reschedule = state_get('feeds_reschedule');
 
   if ($importer_id === TRUE || $importer_id === FALSE) {
     $reschedule = $importer_id;
@@ -234,7 +234,7 @@ function feeds_reschedule($importer_id = NULL) {
   }
 
   if (isset($importer_id)) {
-    config_set('feeds.settings', 'feeds_reschedule', $reschedule);
+    state_set('feeds_reschedule', $reschedule);
   }
 
   if ($reschedule === TRUE) {
