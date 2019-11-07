@@ -103,7 +103,10 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
   if (!isset($cache['allowed_vocabularies'][$target])) {
     foreach ($info['settings']['allowed_values'] as $tree) {
       if ($vocabulary = taxonomy_vocabulary_machine_name_load($tree['vocabulary'])) {
-        $cache['allowed_vocabularies'][$target][$vocabulary->vid] = $vocabulary->machine_name;
+        $vid = $vocabulary->vid;
+
+        $cache['allowed_vocabularies'][$target][$vid] = $vocabulary->machine_name;
+        $cache['vocabulary_targets'][$vid][] = $target;
       }
     }
   }
@@ -159,9 +162,10 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
             }
           }
           elseif ($mapping['autocreate'] && strlen($term)) {
+            $term_vid = key($cache['allowed_vocabularies'][$target]);
             $term = (object) array(
               'name' => drupal_substr($term, 0, 255),
-              'vid' => key($cache['allowed_vocabularies'][$target]),
+              'vid' => $term_vid,
               'vocabulary_machine_name' => reset($cache['allowed_vocabularies'][$target]),
             );
             // Set language if the taxonomy is multilingual.
@@ -173,8 +177,16 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
             }
             taxonomy_term_save($term);
             $tid = $term->tid;
+
             // Add to the list of allowed values.
             $cache['allowed_values'][$target][$tid] = $term->name;
+
+            // Invalidate caches for other fields targeting the same vocabulary.
+            foreach ($cache['vocabulary_targets'][$term_vid] as $clear_target) {
+              if ($clear_target !== $target) {
+                unset($cache['allowed_values'][$clear_target]);
+              }
+            }
           }
           break;
 
