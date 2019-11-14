@@ -205,7 +205,7 @@ class FeedsMapperLinkTestCase extends FeedsMapperTestCase {
     $link_values = array(
       1 => array(
         'title' => 'Feeds',
-        'url' => 'https://www.drupal.org/project/feeds',
+        'url' => 'https://backdropcms.org/project/feeds',
       ),
       2 => array(
         'title' => 'Framework for expected behavior when importing empty/blank values',

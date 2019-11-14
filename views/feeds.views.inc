@@ -4,7 +4,7 @@
  * @file
  * Views integration for Feeds tables.
  *
- * @see http://drupal.org/project/views
+ * @see https://backdropcms.org/project/views
  */
 
 /**
