@@ -79,6 +79,7 @@ class FeedsImporter extends FeedsConfigurable {
   public function save() {
     $save = new stdClass();
     $save->id = $this->id;
+    $save->disabled = $this->disabled;
     $save->config = $this->getConfig();
 
     if ($config = config_get('feeds.feeds_importer.' . $this->id, 'config')) {
@@ -117,7 +118,7 @@ class FeedsImporter extends FeedsConfigurable {
    */
   public function delete() {
     config('feeds.feeds_importer.' . $this->id)->delete();
-    
+
     feeds_reschedule($this->id);
   }
 
@@ -254,6 +255,10 @@ class FeedsImporter extends FeedsConfigurable {
       '#title' => t('Process in background'),
       '#description' => t('For very large imports. If checked, import and delete tasks started from the web UI will be handled by a cron task in the background rather than by the browser. This does not affect periodic imports, they are handled by a cron task in any case.') . $cron_required,
       '#default_value' => $config['process_in_background'],
+    );
+    $form['disabled'] = array(
+      '#type' => 'hidden',
+      '#value' => isset($config['disabled']) ? $config['disabled'] : FALSE,
     );
     return $form;
   }
