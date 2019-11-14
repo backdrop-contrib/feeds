@@ -408,3 +408,20 @@ function feeds_update_1001() {
   $config->set('feeds_use_mbstring', TRUE);
   $config->save();
 }
+
+/**
+ * Convert feeds_log View.
+ */
+function feeds_update_1002() {
+  // See if the feeds_log view has been created or modified on this site.
+  $config = config('views.view.feeds_log');
+
+  // Only update if view isn't overridden
+  if ($config->get('storage') != VIEWS_STORAGE_OVERRIDE) {
+    $path = backdrop_get_path('module', 'feeds') . '/config/';
+    $contents = file_get_contents($path . 'views.view.feeds_log.json');
+    $data = json_decode($contents, true);
+    $config->setData($data);
+    $config->save();
+  }
+}
