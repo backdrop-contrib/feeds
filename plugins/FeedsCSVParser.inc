@@ -290,6 +290,7 @@ class FeedsCSVParser extends FeedsParser {
     backdrop_add_http_header('Content-type', $content_type);
 
     print implode($sep, $columns);
+    backdrop_exit();
   }
 
   /**
