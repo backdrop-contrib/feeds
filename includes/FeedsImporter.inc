@@ -228,7 +228,7 @@ class FeedsImporter extends FeedsConfigurable {
       '#options' => array('' => t('Use standalone form')) + $node_types,
       '#default_value' => $config['content_type'],
     );
-    $cron_required =  ' ' . l(t('Requires cron to be configured.'), 'http://drupal.org/cron', array('attributes' => array('target' => '_new')));
+    $cron_required =  ' ' . l(t('Requires cron to be configured.'), 'https://backdropcms.org/user-guide/setting-cron', array('attributes' => array('target' => '_new')));
     $period = backdrop_map_assoc(array(900, 1800, 3600, 10800, 21600, 43200, 86400, 259200, 604800, 2419200), 'format_interval');
     foreach ($period as &$p) {
       $p = t('Every !p', array('!p' => $p));

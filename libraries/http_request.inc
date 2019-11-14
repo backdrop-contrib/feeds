@@ -139,7 +139,7 @@ function http_request_get($url, $username = NULL, $password = NULL, $accept_inva
   $url = strtr($url, array('feed://' => 'http://', 'webcal://' => 'http://'));
 
   if ($curl) {
-    $headers[] = 'User-Agent: Backdrop (+http://drupal.org/)';
+    $headers[] = 'User-Agent: Backdrop (+https://backdropcms.org/)';
     $result = new stdClass();
     $result->headers = array();
 
