@@ -350,40 +350,28 @@ function feeds_schema() {
   return $schema;
 }
 
-
-
-
-
-
-
-
-
-
+/**
+ * Update variables from Drupal 7 to Backdrop.
+ */
 function feeds_update_1000() {
   $config = config('feeds.settings');
 
-  $config->set('feeds_reschedule', update_variable_get('feeds_reschedule'));
-  $config->set('feeds_debug', update_variable_get('feeds_debug'));
-  $config->set('feeds_importer_class', update_variable_get('feeds_importer_class'));
-  $config->set('feeds_library_dir', update_variable_get('feeds_library_dir'));
+  $config->set('feeds_debug', update_variable_get('feeds_debug', FALSE));
+  $config->set('feeds_importer_class', update_variable_get('feeds_importer_class', 'FeedsImporter'));
+  $config->set('feeds_library_dir', update_variable_get('feeds_library_dir', ''));
 
-  $config->set('default_feeds_importer', update_variable_get('default_feeds_importer'));
-  $config->set('menu_rebuild_needed', update_variable_get('menu_rebuild_needed'));
-  $config->set('feeds_source_class', update_variable_get('feeds_source_class'));
-  $config->set('http_request_timeout', update_variable_get('http_request_timeout'));
+  $config->set('default_feeds_importer', update_variable_get('default_feeds_importer', ''));
+  $config->set('feeds_source_class', update_variable_get('feeds_source_class', 'FeedsSource'));
+  $config->set('http_request_timeout', update_variable_get('http_request_timeout', 30));
 
-  $config->set('proxy_server', update_variable_get('proxy_server'));
-  $config->set('proxy_port', update_variable_get('proxy_port'));
-  $config->set('proxy_username', update_variable_get('proxy_username'));
-  $config->set('proxy_password', update_variable_get('proxy_password'));
-
-  $config->set('proxy_auth_method', update_variable_get('proxy_auth_method'));
-  $config->set('feeds_never_use_curl', update_variable_get('feeds_never_use_curl'));
-  $config->set('feeds_library_dir', update_variable_get('feeds_library_dir'));
-  $config->set('feeds_process_limit', update_variable_get('feeds_process_limit'));
-  $config->set('default_nodes_main', update_variable_get('default_nodes_main'));
+  $config->set('proxy_auth_method', update_variable_get('proxy_auth_method', ''));
+  $config->set('feeds_never_use_curl', update_variable_get('feeds_never_use_curl', FALSE));
+  $config->set('feeds_process_limit', update_variable_get('feeds_process_limit', 5));
+  $config->set('feeds_use_mbstring', update_variable_get('feeds_use_mbstring', TRUE));
 
   $config->save();
+
+  state_set('feeds_reschedule', update_variable_get('feeds_reschedule', FALSE));
 
   // Delete variables.
   update_variable_del('feeds_reschedule');
@@ -392,18 +380,31 @@ function feeds_update_1000() {
   update_variable_del('feeds_library_dir');
 
   update_variable_del('default_feeds_importer');
-  update_variable_del('menu_rebuild_needed');
   update_variable_del('feeds_source_class');
   update_variable_del('http_request_timeout');
 
-  update_variable_del('proxy_server');
-  update_variable_del('proxy_port');
-  update_variable_del('proxy_username');
-  update_variable_del('proxy_password');
-
   update_variable_del('proxy_auth_method');
   update_variable_del('feeds_never_use_curl');
-  update_variable_del('feeds_library_dir');
   update_variable_del('feeds_process_limit');
-  update_variable_del('default_nodes_main');
+  update_variable_del('feeds_use_mbstring');
+}
+
+/**
+ * Convert config that should be state. And remove config that are in core
+ * already.
+ */
+function feeds_update_1001() {
+  $config = config('feeds.settings');
+
+  state_set('feeds_reschedule', $config->get('feeds_reschedule'));
+
+  $config->clear('feeds_reschedule');
+  $config->clear('menu_rebuild_needed');
+  $config->clear('default_nodes_main');
+  $config->clear('proxy_server');
+  $config->clear('proxy_port');
+  $config->clear('proxy_username');
+  $config->clear('proxy_password');
+  $config->set('feeds_use_mbstring', TRUE);
+  $config->save();
 }
