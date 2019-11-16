@@ -1,0 +1,11 @@
+[FeedsExamplesNodeTestCase]
+name = Example: Node import
+description = Test "Node import" default configuration.
+group = Feeds
+file = feeds_import.test
+
+[FeedsExamplesUserTestCase]
+name = Example: User import
+description = Test "User import" default configuration.
+group = Feeds
+file = feeds_import.test
