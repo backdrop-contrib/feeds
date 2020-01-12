@@ -351,6 +351,37 @@ function feeds_schema() {
 }
 
 /**
+ * Implements hook_install().
+ */
+function feeds_install() {
+  // If view already exists make sure it's enabled.
+  $config = config('views.view.feeds_log');
+  $config->set('disabled', FALSE);
+  $config->save();
+}
+
+/**
+ * Implements hook_disable().
+ */
+function feeds_disable() {
+  // Disable the view.
+  $config = config('views.view.feeds_log');
+  $config->set('disabled', TRUE);
+  $config->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function feeds_uninstall() {
+  // Remove view
+  $config = config('views.view.feeds_log');
+  $config->delete();
+  // Clear admin bar cache to remove view from menu
+  cache('admin_bar')->flush();
+}
+
+/**
  * Update variables from Drupal 7 to Backdrop.
  */
 function feeds_update_1000() {
