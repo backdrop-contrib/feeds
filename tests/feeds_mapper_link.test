@@ -346,9 +346,9 @@ class FeedsMapperLinkTestCase extends FeedsMapperTestCase {
       ),
     ));
     $this->importFile('csv', $this->absolutePath() . '/tests/feeds/content.csv');
-    $this->assertText('Failed importing 2 nodes.');
-    $this->assertText("Field validation errors in item 'Lorem ipsum'");
-    $this->assertText('The value Lorem provided for alpha_link_field_label is not a valid URL.');
+    $this->assertText('Failed importing 1 node.');
+    $this->assertText("Field validation errors in item 'Ut wisi enim ad minim veniam'");
+    $this->assertText('The value Ut wisi provided for alpha_link_field_label is not a valid URL.');
   }
 
   /**
