@@ -98,7 +98,8 @@ function feeds_ui_overview_form($form, &$form_status) {
         l($edit, 'admin/structure/feeds/' . $importer->id) . ' | ' .
         l(t('Export'), 'admin/structure/feeds/' . $importer->id . '/export') . ' | ' .
         l(t('Clone'), 'admin/structure/feeds/' . $importer->id . '/clone') .
-        (empty($delete) ? '' :  ' | ' . l($delete, 'admin/structure/feeds/' . $importer->id . '/delete')),
+        (empty($delete) ? '' :  ' | ' . l($delete, 'admin/structure/feeds/' . $importer->id . '/delete')) .
+        ($importer->disabled ? '' :  ' | ' . l(t('Execute'), 'import/' . $importer->id)),
     );
 
     $importer_form[$importer->id] = array(
