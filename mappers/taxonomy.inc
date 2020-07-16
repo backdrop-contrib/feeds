@@ -153,8 +153,8 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
 
             // Find the first allowed term.
             foreach ($tids['taxonomy_term'] as $possible_term) {
-              if (isset($cache['allowed_values'][$target][$possible_term->tid])) {
-                $tid = $possible_term->tid;
+              if (isset($cache['allowed_values'][$target][$possible_term->entity_id])) {
+                $tid = $possible_term->entity_id;
                 break;
               }
             }
