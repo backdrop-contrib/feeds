@@ -54,7 +54,7 @@ function feeds_ui_overview_form($form, &$form_status) {
   $form['#header'] = array(
     t('Name'),
     t('Description'),
-    t('Attached to'),
+    t('Form'),
     t('Status'),
     t('Operations'),
     t('Enabled'),
@@ -64,7 +64,7 @@ function feeds_ui_overview_form($form, &$form_status) {
     $importer_form['name']['#markup'] = check_plain($importer->config['name']);
     $importer_form['description']['#markup'] = check_plain($importer->config['description']);
     if (empty($importer->config['content_type'])) {
-      $importer_form['attached']['#markup'] = '[none]';
+      $importer_form['attached']['#markup'] = l(check_plain($importer->config['name']), 'import/' . check_plain($importer->id));
     }
     else {
       if (!$importer->disabled) {
