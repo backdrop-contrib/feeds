@@ -242,7 +242,7 @@ class FeedsTermProcessor extends FeedsProcessor {
    * Return vocabulary to map to.
    */
   public function vocabulary() {
-    if ($vocabulary = taxonomy_vocabulary_machine_name_load($this->bundle())) {
+    if ($vocabulary = taxonomy_vocabulary_load($this->bundle())) {
       return $vocabulary;
     }
     throw new Exception(t('No vocabulary defined for Taxonomy Term processor.'));
