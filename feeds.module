@@ -298,6 +298,13 @@ function feeds_menu() {
     'access callback' => 'feeds_page_access',
     'file' => 'feeds.pages.inc',
   );
+  $items['admin/content/import'] = array(
+    'title' => 'Import',
+    'page callback' => 'feeds_page',
+    'access callback' => 'feeds_page_access',
+    'file' => 'feeds.pages.inc',
+    'menu_name' => 'management',
+  );
   $items['import/%feeds_importer'] = array(
     'title callback' => 'feeds_importer_title',
     'title arguments' => array(1),
