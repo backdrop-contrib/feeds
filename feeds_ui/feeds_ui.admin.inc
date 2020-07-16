@@ -50,6 +50,8 @@ function feeds_ui_mapping_help() {
  */
 function feeds_ui_overview_form($form, &$form_status) {
   $form = $form['enabled'] = $form['disabled'] = array();
+  $current_path = current_path();
+  $options = array('destination' => $current_path);
 
   $form['#header'] = array(
     t('Name'),
@@ -93,13 +95,36 @@ function feeds_ui_overview_form($form, &$form_status) {
     $importer_form['status'] = array(
       '#markup' => $status,
     );
-    $importer_form['operations'] = array(
-      '#markup' =>
-        l($edit, 'admin/structure/feeds/' . $importer->id) . ' | ' .
-        l(t('Export'), 'admin/structure/feeds/' . $importer->id . '/export') . ' | ' .
-        l(t('Clone'), 'admin/structure/feeds/' . $importer->id . '/clone') .
-        (empty($delete) ? '' :  ' | ' . l($delete, 'admin/structure/feeds/' . $importer->id . '/delete')),
-    );
+    if (!$importer->disabled) {
+      $links['edit'] = array(
+        'title' => $edit,
+        'href' => 'admin/structure/feeds/' . $importer->id,
+        'query' => $options,
+      );
+      $links['export'] = array(
+        'title' => t('Export'),
+        'href' => 'admin/structure/feeds/' . $importer->id . '/export',
+        'query' => $options,
+      );
+      $links['clone'] = array(
+        'title' => t('Clone'),
+        'href' => 'admin/structure/feeds/' . $importer->id . '/clone',
+        'query' => $options,
+      );
+      if ($importer->export_type != EXPORT_IN_CODE) {
+        $links['delete'] = array(
+          'title' => $delete,
+          'href' => 'admin/structure/feeds/' . $importer->id . '/delete',
+          'query' => $options,
+        );
+      }
+      $importer_form['operations'] = array(
+        '#type' => 'dropbutton',
+        '#links' => $links,
+      );
+    } else {
+      $importer_form['operations']['#markup'] = t('Disabled');
+    }
 
     $importer_form[$importer->id] = array(
       '#type' => 'checkbox',
