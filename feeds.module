@@ -293,13 +293,13 @@ function feeds_forms() {
 function feeds_menu() {
   $items = array();
   $items['import'] = array(
-    'title' => 'Import',
+    'title' => 'Feeds Import',
     'page callback' => 'feeds_page',
     'access callback' => 'feeds_page_access',
     'file' => 'feeds.pages.inc',
   );
   $items['admin/content/import'] = array(
-    'title' => 'Import',
+    'title' => 'Feeds Import',
     'page callback' => 'feeds_page',
     'access callback' => 'feeds_page_access',
     'file' => 'feeds.pages.inc',
