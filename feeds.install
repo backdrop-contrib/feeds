@@ -60,37 +60,6 @@ function feeds_requirements($phase) {
 function feeds_schema() {
   $schema = array();
 
-  $schema['feeds_importer'] = array(
-    'description' => 'Configuration of feeds objects.',
-    'export' => array(
-      'key' => 'id',
-      'identifier' => 'feeds_importer',
-      'default hook' => 'feeds_importer_default',  // Function hook name.
-      'api' => array(
-        'owner' => 'feeds',
-        'api' => 'feeds_importer_default',  // Base name for api include files.
-        'minimum_version' => 1,
-        'current_version' => 1,
-      ),
-    ),
-    'fields' => array(
-      'id' => array(
-        'type' => 'varchar',
-        'length' => 128,
-        'not null' => TRUE,
-        'default' => '',
-        'description' => 'Id of the fields object.',
-      ),
-      'config' => array(
-        'type' => 'blob',
-        'size' => 'big',
-        'not null' => FALSE,
-        'description' => 'Configuration of the feeds object.',
-        'serialize' => TRUE,
-      ),
-    ),
-    'primary key' => array('id'),
-  );
   $schema['feeds_source'] = array(
     'description' => 'Source definitions for feeds.',
     'fields' => array(
@@ -454,5 +423,28 @@ function feeds_update_1002() {
     $data = json_decode($contents, true);
     $config->setData($data);
     $config->save();
+  }
+}
+
+/**
+ * Move feeds_importer configuration from table to config files.
+ */
+function feeds_update_1003() {
+  if (db_table_exists('feeds_importer')) {
+    $feeds_importers = db_select('feeds_importer', 'fi')
+    ->fields('fi')
+    ->execute()
+    ->fetchAllAssoc('id');
+
+    foreach($feeds_importers as $importer) {
+      $config = config('feeds.feeds_importer.' . $importer->id);
+      if ($config->isNew()) {
+        $config->set('id', $importer->id);
+        $config->set('disabled', FALSE);
+        $config->set('config', unserialize($importer->config));
+        $config->save();
+      }
+    }
+    db_drop_table('feeds_importer');
   }
 }
