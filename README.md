@@ -75,7 +75,7 @@ See "The developer's guide to Feeds": <http://drupal.org/node/622700>
 Debugging
 ---------
 
-Set the Backdrop config variable `feeds_debug` to TRUE (i. e. using drush). This will create a file `/tmp/feeds_[my_site_location].log`. Use `tail -f` on the command line to get a live view of debug output.
+Set the Backdrop config variable `feeds_debug` to TRUE. This will create a file `/tmp/feeds_[my_site_location].log`. Use `tail -f` on the command line to get a live view of debug output. You can either set it in `feeds.settings.json` in your active configuration folder or by putting `$config['feeds.settings']['feeds_debug'] = TRUE;` into the `settings.php` file.
 
 Note: at the moment, only PubSubHubbub related actions are logged.
 
@@ -87,7 +87,7 @@ See "The site builder's guide to Feeds": <http://drupal.org/node/622698>
 Hidden settings
 ---------------
 
-Hidden settings are variables that you can define by updating them in `feeds.settings.json` in your active configuration folder.
+Hidden settings are variables that you can define by either updating them in `feeds.settings.json` in your active configuration folder or overriding them in `settings.php` file like this example: `$config['feeds.settings']['NAME'] = VALUE;`.
 
 Name:        `feeds_debug`  
 Default:     `FALSE`  
