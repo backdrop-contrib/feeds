@@ -37,7 +37,6 @@ abstract class FeedsPlugin extends FeedsConfigurable implements FeedsSourceInter
    */
   protected function __construct($id) {
     $this->id = $id;
-    $this->export_type = FEEDS_EXPORT_NONE;
     $this->disabled = FALSE;
   }
 

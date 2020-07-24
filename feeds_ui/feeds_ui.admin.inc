@@ -57,7 +57,6 @@ function feeds_ui_overview_form($form, &$form_status) {
     t('Name'),
     t('Description'),
     t('Form'),
-    t('Status'),
     t('Operations'),
     t('Enabled'),
   );
@@ -81,27 +80,9 @@ function feeds_ui_overview_form($form, &$form_status) {
       }
     }
 
-    if ($importer->export_type == EXPORT_IN_CODE) {
-      $status = t('Default');
-      $edit = t('Override');
-      $delete = '';
-    }
-    elseif ($importer->export_type == EXPORT_IN_DATABASE) {
-      $status = t('Normal');
-      $edit = t('Edit');
-      $delete = t('Delete');
-    }
-    elseif ($importer->export_type == (EXPORT_IN_CODE | EXPORT_IN_DATABASE)) {
-      $status = t('Overridden');
-      $edit = t('Edit');
-      $delete = t('Revert');
-    }
-    $importer_form['status'] = array(
-      '#markup' => $status,
-    );
     if (!$importer->disabled) {
       $links['edit'] = array(
-        'title' => $edit,
+        'title' => t('Edit'),
         'href' => 'admin/structure/feeds/' . $importer->id,
         'query' => $options,
       );
@@ -115,13 +96,11 @@ function feeds_ui_overview_form($form, &$form_status) {
         'href' => 'admin/structure/feeds/' . $importer->id . '/clone',
         'query' => $options,
       );
-      if ($importer->export_type != EXPORT_IN_CODE) {
-        $links['delete'] = array(
-          'title' => $delete,
-          'href' => 'admin/structure/feeds/' . $importer->id . '/delete',
-          'query' => $options,
-        );
-      }
+      $links['delete'] = array(
+        'title' => t('Delete'),
+        'href' => 'admin/structure/feeds/' . $importer->id . '/delete',
+        'query' => $options,
+      );
       $importer_form['operations'] = array(
         '#type' => 'dropbutton',
         '#links' => $links,
@@ -254,14 +233,9 @@ function feeds_ui_create_form_submit($form, &$form_state) {
  */
 function feeds_ui_delete_form($form, &$form_state, $importer) {
   $form['#importer'] = $importer->id;
-  if ($importer->export_type & EXPORT_IN_CODE) {
-    $title = t('Would you really like to revert the importer @importer?', array('@importer' => $importer->config['name']));
-    $button_label = t('Revert');
-  }
-  else {
-    $title = t('Would you really like to delete the importer @importer?', array('@importer' => $importer->config['name']));
-    $button_label = t('Delete');
-  }
+  $title = t('Would you really like to delete the importer @importer?', array('@importer' => $importer->config['name']));
+  $button_label = t('Delete');
+
   return confirm_form(
     $form,
     $title,
@@ -1210,9 +1184,7 @@ function feeds_ui_importer_import_validate($form, &$form_state) {
   $exists = feeds_ui_importer_machine_name_exists($feeds_importer->id);
 
   if ($exists && !$form_state['values']['id_override']) {
-    if (feeds_importer($feeds_importer->id)->export_type != EXPORT_IN_CODE) {
-      return form_error($form['id'], t('Feeds importer already exists with that id.'));
-    }
+    return form_error($form['id'], t('Feeds importer already exists with that id.'));
   }
 
   if (!$form_state['values']['bypass_validation']) {
