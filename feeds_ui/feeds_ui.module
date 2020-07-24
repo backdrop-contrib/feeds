@@ -35,14 +35,15 @@ function feeds_ui_menu() {
     'file' => 'feeds_ui.admin.inc',
     'type' => MENU_LOCAL_ACTION,
   );
-  $items['admin/structure/feeds/import'] = array(
-    'title' => 'Import importer',
-    'page callback' => 'backdrop_get_form',
-    'page arguments' => array('feeds_ui_importer_import'),
-    'access callback' => 'feeds_importer_import_access',
-    'file' => 'feeds_ui.admin.inc',
-    'type' => MENU_LOCAL_ACTION,
-  );
+  if (module_exists('config')) {
+    $items['admin/structure/feeds/import'] = array(
+      'title' => 'Import importer',
+      'page callback' => 'feeds_ui_importer_import',
+      'access arguments' => array('synchronize configuration'),
+      'file' => 'feeds_ui.admin.inc',
+      'type' => MENU_LOCAL_ACTION,
+    );
+  }
   $items['admin/structure/feeds/%feeds_importer'] = array(
     'title callback' => 'feeds_ui_importer_title',
     'title arguments' => array(3),
