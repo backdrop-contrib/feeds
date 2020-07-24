@@ -16,7 +16,7 @@ Features
   * Granular mapping of parsed data to content elements.
 * Import configurations can be piggy backed on nodes (thus using nodes to track subscriptions to feeds) or they can be used on a standalone form.
 * Unlimited number of import configurations.
-* Export import configurations to code.
+* Export feeds importer configurations.
 * Optional libraries module support.
 
 Requirements

@@ -473,16 +473,6 @@ function feeds_access($action, $param) {
 }
 
 /**
- * Access callback to determine if the user can import Feeds importers.
- *
- * Feeds imports require an additional access check because they are PHP
- * code and PHP is more locked down than administer feeds.
- */
-function feeds_importer_import_access() {
-  return user_access('administer feeds') && user_access('use PHP for settings');
-}
-
-/**
  * Menu access callback.
  */
 function feeds_page_access() {
@@ -939,22 +929,11 @@ function feeds_cache_clear($rebuild_menu = TRUE) {
   backdrop_static_reset('_node_types_build');
   $cache = &backdrop_static('backdrop_tools_export_load_object');
   $cached_database = &backdrop_static('backdrop_tools_export_load_object_all');
-  $cached_defaults = &backdrop_static('_ctools_export_get_defaults');
   unset($cache);
   unset($cached_database);
   unset($cached_defaults);
   if ($rebuild_menu) {
     menu_rebuild();
-  }
-}
-
-/**
- * Exports a FeedsImporter configuration to code.
- */
-function feeds_export($importer_id, $indent = '') {
-  $result = feeds_load_importer_object($importer_id);
-  if (isset($result[$importer_id])) {
-    return ctools_export_object('feeds_importer', $result[$importer_id], $indent);
   }
 }
 
