@@ -86,11 +86,16 @@ function feeds_ui_overview_form($form, &$form_status) {
         'href' => 'admin/structure/feeds/' . $importer->id,
         'query' => $options,
       );
-      $links['export'] = array(
-        'title' => t('Export'),
-        'href' => 'admin/structure/feeds/' . $importer->id . '/export',
-        'query' => $options,
-      );
+      if (module_exists('config') && user_access('synchronize configuration')) {
+        $links['export'] = array(
+          'title' => t('Export'),
+          'href' => 'admin/config/development/configuration/single/export',
+          'query' => array(
+            'group' => 'Feeds importers',
+            'name' => 'feeds.feeds_importer.' . $importer->id,
+          ),
+        );
+      }
       $links['clone'] = array(
         'title' => t('Clone'),
         'href' => 'admin/structure/feeds/' . $importer->id . '/clone',
