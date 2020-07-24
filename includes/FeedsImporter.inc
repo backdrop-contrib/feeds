@@ -101,8 +101,7 @@ class FeedsImporter extends FeedsConfigurable {
    * Load configuration and unpack.
    */
   public function load() {
-      if ($config = feeds_load_importer_object($this->id)) {
-      $this->export_type = $config->export_type;
+    if ($config = feeds_load_importer_object($this->id)) {
       $this->disabled = isset($config->disabled) ? $config->disabled : FALSE;
       $this->config = $config->config;
       return TRUE;

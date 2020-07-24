@@ -28,18 +28,6 @@ abstract class FeedsConfigurable {
   // A unique identifier for the configuration.
   protected $id;
 
-  /*
-  @todo Should live in FeedsImporter. Not all child classes
-  of FeedsConfigurable are exportable. Same goes for $disabled.
-
-  Export type can be one of
-  FEEDS_EXPORT_NONE - the configurable only exists in memory
-  EXPORT_IN_DATABASE - the configurable is defined in the database.
-  EXPORT_IN_CODE - the configurable is defined in code.
-  EXPORT_IN_CODE | EXPORT_IN_DATABASE - the configurable is defined in code, but
-                                        overridden in the database.*/
-  protected $export_type;
-
   /**
    * Status of this object.
    */
@@ -72,9 +60,7 @@ abstract class FeedsConfigurable {
   protected function __construct($id) {
     // Set this object's id.
     $this->id = $id;
-    // Per default we assume that a Feeds object is not saved to
-    // database nor is it exported to code.
-    $this->export_type = FEEDS_EXPORT_NONE;
+
     // Make sure configuration is populated.
     $this->config = $this->configDefaults();
     $this->disabled = FALSE;
@@ -88,13 +74,9 @@ abstract class FeedsConfigurable {
   }
 
   /**
-   * Determine whether this object is persistent and enabled. I. e. it is
-   * defined either in code or in the database and it is enabled.
+   * Determine whether this object is enabled.
    */
   public function existing() {
-    if ($this->export_type == FEEDS_EXPORT_NONE) {
-      throw new FeedsNotExistingException(t('Object is not persistent.'));
-    }
     if ($this->disabled) {
       throw new FeedsNotExistingException(t('Object is disabled.'));
     }

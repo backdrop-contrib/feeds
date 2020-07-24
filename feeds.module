@@ -11,13 +11,10 @@ define('FEEDS_REQUEST_TIME', time());
 define('FEEDS_SCHEDULE_NEVER', -1);
 // Never expire feed items.
 define('FEEDS_EXPIRE_NEVER', -1);
-// An object that is not persistent. Compare EXPORT_IN_DATABASE, EXPORT_IN_CODE.
-define('FEEDS_EXPORT_NONE', 0x0);
+
 // Status of batched operations.
 define('FEEDS_BATCH_COMPLETE', 1.0);
 define('FEEDS_BATCH_ACTIVE', 0.0);
-define('EXPORT_IN_DATABASE', 0x01);
-define('EXPORT_IN_CODE', 0x02);
 
 /**
  * @defgroup hooks Hook and callback implementations
@@ -768,16 +765,6 @@ function feeds_system_info_alter(array &$info, $file, $type) {
   // Check if any importers are using any plugins from the current module.
   foreach (feeds_importer_load_all(TRUE) as $importer) {
 
-    // Skip importers that are defined in code and are provided by the current
-    // module. This ensures that modules that define both an importer and a
-    // plugin can still be disabled.
-    if ($importer->export_type == EXPORT_IN_CODE) {
-      $configs = feeds_load_importer_object($importer->id);
-      if (isset($configs[$importer->id]) && $configs[$importer->id]->export_module === $file->name) {
-        continue;
-      }
-    }
-
     $configuration = $importer->getConfig();
 
     foreach (array('fetcher', 'parser', 'processor') as $plugin_type) {
@@ -1424,65 +1411,17 @@ function feeds_load_importer_object($importer_id = NULL) {
     $object->config = $data['config'];
     $object->table = $table;
     $object->type = t('Normal');
-    $object->export_type = EXPORT_IN_DATABASE;
     $object->disabled = $data['disabled'];
 
     $cache[$object->id] = $object;
   }
 
-  $defaults = _feeds_importer_get_defaults($table);
-
-  if ($defaults) {
-    foreach ($defaults as $object) {
-      if ($object->id != $importer_id) {
-        continue;
-      }
-
-      if (!empty($cache[$object->id])) {
-        $cache[$object->id]->type = t('Overridden');
-        $cache[$object->id]->export_type |= EXPORT_IN_CODE;
-        $cache[$object->id]->export_module = isset($object->export_module) ? $object->export_module : NULL;
-      }
-      else {
-        $object->type = t('Default');
-        $object->export_type = EXPORT_IN_CODE;
-        $object->in_code_only = TRUE;
-        $object->table = $table;
-
-        $cache[$object->id] = $object;
-      }
-    }
-  }
   // If fetching all, we've done so and we are finished.
   if (!$importer_id) {
     return $cache;
   }
 
   return !empty($cache[$importer_id]) ? $cache[$importer_id] : NULL;
-}
-
-function _feeds_importer_get_defaults($table) {
-  $cache = &backdrop_static(__FUNCTION__, array());
-
-  if (!isset($cache)) {
-    $cache = array();
-
-    $modules = module_implements('feeds_importer_default');
-    foreach ($modules as $module) {
-      $function = $module . '_feeds_importer_default';
-      if (function_exists($function)) {
-        foreach ((array) $function() as $name => $object) {
-          // Record the module that provides this exportable.
-          $object->export_module = $module;
-          $cache[$name] = $object;
-        }
-      }
-    }
-
-    backdrop_alter('feeds_importer_default', $cache);
-  }
-
-  return $cache;
 }
 
 function feeds_get_plugins($plugin = NULL) {
