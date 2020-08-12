@@ -387,7 +387,7 @@ class FeedsMapperFieldTestCase extends FeedsMapperTestCase {
       'label' => 'alpha_text_label',
       'bundle' => 'addams',
       'widget' => array(
-        'type' => 'textfield',
+        'type' => 'text_textfield',
       ),
     ));
 
@@ -438,7 +438,7 @@ class FeedsMapperFieldTestCase extends FeedsMapperTestCase {
       'label' => 'alpha_text_label',
       'bundle' => 'user',
       'widget' => array(
-        'type' => 'textfield',
+        'type' => 'text_textfield',
       ),
     ));
 
