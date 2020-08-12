@@ -1436,32 +1436,6 @@ function feeds_include_simplepie() {
 }
 
 /**
- * Simplified drupal_alter().
- *
- * - None of that 'multiple parameters by ref' crazyness.
- * - Don't use module_implements() to allow hot including on behalf
- *   implementations (see mappers/).
- *
- * @todo This needs to be removed and drupal_alter() used. This is crazy dumb.
- *
- * @deprecated in 7.x-2.0-alpha6 and will be removed before 7.x-2.0.
- */
-function feeds_alter($type, &$data) {
-  $args = array(&$data);
-  $additional_args = func_get_args();
-  array_shift($additional_args);
-  array_shift($additional_args);
-  $args = array_merge($args, $additional_args);
-
-  $hook = $type . '_alter';
-  foreach (module_list() as $module) {
-    if (module_hook($module, $hook)) {
-      call_user_func_array($module . '_' . $hook, $args);
-    }
-  }
-}
-
-/**
  * @}
  */
 
