@@ -18,7 +18,7 @@ class ParserCSVIterator implements Iterator {
   private $currentPos;
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function __construct($filepath) {
     $this->handle = fopen($filepath, 'r');
@@ -27,7 +27,7 @@ class ParserCSVIterator implements Iterator {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function __destruct() {
     if ($this->handle) {
@@ -46,7 +46,7 @@ class ParserCSVIterator implements Iterator {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function rewind($pos = 0) {
     if ($this->handle) {
@@ -56,7 +56,7 @@ class ParserCSVIterator implements Iterator {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function next() {
     if ($this->handle) {
@@ -67,28 +67,28 @@ class ParserCSVIterator implements Iterator {
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function valid() {
     return isset($this->currentLine);
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function current() {
     return $this->currentLine;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function currentPos() {
     return $this->currentPos;
   }
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function key() {
     return 'line';
@@ -113,7 +113,7 @@ class ParserCSV {
   private $useMbString;
 
   /**
-   *
+   * {@inheritdoc}
    */
   public function __construct() {
     $this->delimiter = ',';

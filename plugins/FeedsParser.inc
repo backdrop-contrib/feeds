@@ -71,7 +71,7 @@ abstract class FeedsParser extends FeedsPlugin {
    * @param $fetcher_result
    *   FeedsFetcherResult returned by fetcher.
    */
-  public abstract function parse(FeedsSource $source, FeedsFetcherResult $fetcher_result);
+  abstract public function parse(FeedsSource $source, FeedsFetcherResult $fetcher_result);
 
   /**
    * Clear all caches for results for given source.
@@ -195,8 +195,11 @@ abstract class FeedsParser extends FeedsPlugin {
  * @see FeedsEnclosure
  */
 class FeedsElement {
-  // The standard value of this element. This value can contain be a simple type,
-  // a FeedsElement or an array of either.
+
+  /**
+   * The standard value of this element. This value can contain be a simple
+   * type, a FeedsElement or an array of either.
+   */
   protected $value;
 
   /**
@@ -533,7 +536,9 @@ class FeedsEnclosure extends FeedsElement {
  */
 class FeedsDateTimeElement extends FeedsElement {
 
-  // Start date and end date.
+  /**
+   * Start date and end date.
+   */
   public $start;
   public $end;
 

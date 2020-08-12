@@ -316,7 +316,7 @@ function feeds_reschedule($importer_id = NULL) {
 }
 
 /**
- * Implements feeds_permission().
+ * Implements hook_permission().
  */
 function feeds_permission() {
   $perms = array(
@@ -1029,7 +1029,6 @@ function feeds_menu_local_tasks_alter(&$data, $router_item, $root_path) {
     );
   }
 }
-
 
 /**
  * @}

@@ -50,7 +50,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
   /**
    * Entity type this processor operates on.
    */
-  public abstract function entityType();
+  abstract public function entityType();
 
   /**
    * Bundle type this processor operates on.
@@ -319,7 +319,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
    * @param object $entity
    *   The entity to be saved.
    */
-  protected abstract function entitySave($entity);
+  abstract protected function entitySave($entity);
 
   /**
    * Deletes a series of entities.
@@ -327,13 +327,13 @@ abstract class FeedsProcessor extends FeedsPlugin {
    * @param array $entity_ids
    *   Array of unique identity ids to be deleted.
    */
-  protected abstract function entityDeleteMultiple($entity_ids);
+  abstract protected function entityDeleteMultiple($entity_ids);
 
   /**
    * Wrapper around entity_get_info().
    *
-   * entity_get_info() is wrapped so that extending classes can override it and
-   * add more entity information.
+   * The entity_get_info() function is wrapped so that extending classes can
+   * override it and add more entity information.
    *
    * Allowed additional keys:
    * - label plural
