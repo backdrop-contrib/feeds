@@ -14,6 +14,10 @@ include_once 'feeds.test';
  * @todo Could I use BackdropUnitTestCase here?
  */
 class CommonSyndicationParserTestCase extends BackdropWebTestCase {
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Common Syndication Parser',
@@ -22,6 +26,9 @@ class CommonSyndicationParserTestCase extends BackdropWebTestCase {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp(array('feeds', 'feeds_ui', 'job_scheduler'));
     feeds_include_library('common_syndication_parser.inc', 'common_syndication_parser');
@@ -35,6 +42,7 @@ class CommonSyndicationParserTestCase extends BackdropWebTestCase {
     $this->_testRSS2();
     $this->_testAtomGeoRSS();
     $this->_testAtomGeoRSSWithoutAuthor();
+    $this->_testAtomEntriesWithoutBaseUrl();
   }
 
   /**
@@ -94,6 +102,32 @@ class CommonSyndicationParserTestCase extends BackdropWebTestCase {
   }
 
   /**
+   * Tests if the base url is prepended for entries without base url.
+   *
+   * For example, the url in the following entry should be parsed as
+   * 'http://www.example.com/node/123' and not as 'node/123'.
+   * @code
+   * <entry>
+   *   <link href="node/123"/>
+   * </entry>
+   * @endcode
+   */
+  protected function _testAtomEntriesWithoutBaseUrl() {
+    $string = $this->readFeed('entries-without-base-url.atom');
+    $feed = common_syndication_parser_parse($string);
+
+    // Assert that all items got the base url assigned.
+    $expected = array(
+      'http://www.example.com/node/1281496#comment-11669575',
+      'http://www.example.com/node/1281496#comment-10080648',
+      'http://www.example.com/node/1281496#comment-10062564',
+    );
+    foreach ($feed['items'] as $key => $item) {
+      $this->assertEqual($expected[$key], $item['url']);
+    }
+  }
+
+  /**
    * Helper to read a feed.
    */
   protected function readFeed($filename) {
@@ -103,4 +137,5 @@ class CommonSyndicationParserTestCase extends BackdropWebTestCase {
     fclose($handle);
     return $string;
   }
+
 }

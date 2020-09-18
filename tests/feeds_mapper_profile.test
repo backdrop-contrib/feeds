@@ -12,6 +12,9 @@ include_once 'feeds.test';
  */
 class FeedsMapperProfileTestCase extends FeedsMapperTestCase {
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Mapper: Profile',
@@ -20,6 +23,9 @@ class FeedsMapperProfileTestCase extends FeedsMapperTestCase {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     // Call parent setup with required modules.
     parent::setUp(array('profile'));
@@ -85,7 +91,7 @@ class FeedsMapperProfileTestCase extends FeedsMapperTestCase {
     $this->backdropPost('admin/structure/feeds/profile_import/settings', $edit, 'Save');
 
     // Import CSV file.
-    $this->importFile('profile_import', $this->absolutePath() .'/tests/feeds/profile.csv');
+    $this->importFile('profile_import', $this->absolutePath() . '/tests/feeds/profile.csv');
     $this->assertText('Created 2 users.');
 
     // Check the two imported users.

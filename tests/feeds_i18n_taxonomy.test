@@ -20,6 +20,9 @@ class Feedsi18nTaxonomyTestCase extends Feedsi18nTestCase {
    */
   private $vocabulary;
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Multilingual terms',
@@ -29,6 +32,9 @@ class Feedsi18nTaxonomyTestCase extends Feedsi18nTestCase {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp($modules = array(), $permissions = array()) {
     module_load_include('inc', 'feeds' , 'plugins/FeedsPlugin');
     $this->entityType = 'taxonomy_term';
@@ -120,4 +126,5 @@ class Feedsi18nTaxonomyTestCase extends Feedsi18nTestCase {
       $this->assertFalse(isset($entity->language), 'The term does not have a language.');
     }
   }
+
 }

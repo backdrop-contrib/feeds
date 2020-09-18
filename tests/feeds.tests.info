@@ -16,6 +16,12 @@ description = TBD
 group = Feeds
 file = feeds.test
 
+[FeedsContentTypeTest]
+name = Feed content type
+description = Tests behavior for when an importer is attached to a content type.
+group = Feeds
+file = feeds_content_type.test
+
 [FeedsDateTimeTest]
 name = FeedsDateTimeTest
 description = TBD

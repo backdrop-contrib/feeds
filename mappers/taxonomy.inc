@@ -103,7 +103,10 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
   if (!isset($cache['allowed_vocabularies'][$target])) {
     foreach ($info['settings']['allowed_values'] as $tree) {
       if ($vocabulary = taxonomy_vocabulary_load($tree['vocabulary'])) {
-        $cache['allowed_vocabularies'][$target][$vocabulary->machine_name] = $vocabulary->machine_name;
+        $vocabulary = $vocabulary->vocabulary;
+
+        $cache['allowed_vocabularies'][$target][$vocabulary] = $vocabulary->machine_name;
+        $cache['vocabulary_targets'][$vocabulary][] = $target;
       }
     }
   }
@@ -118,7 +121,6 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
   $query->entityCondition('entity_type', 'taxonomy_term')
     ->entityCondition('bundle', $cache['allowed_vocabularies'][$target])
     ->range(0, 1);
-
 
   $field = isset($entity->$target) ? $entity->$target : array($language => array());
 
@@ -163,6 +165,7 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
             $term = entity_create('taxonomy_term', array(
               'name' => backdrop_substr($term, 0, 255),
               'vocabulary' => key($cache['allowed_vocabularies'][$target]),
+              'vocabulary_machine_name' => reset($cache['allowed_vocabularies'][$target]),
               'format' => 1
             ));
             // Set language if the taxonomy is multilingual.
@@ -174,8 +177,16 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
             }
             taxonomy_term_save($term);
             $tid = $term->tid;
+
             // Add to the list of allowed values.
             $cache['allowed_values'][$target][$tid] = $term->name;
+
+            // Invalidate caches for other fields targeting the same vocabulary.
+            foreach ($cache['vocabulary_targets'][$term_vid] as $clear_target) {
+              if ($clear_target !== $target) {
+                unset($cache['allowed_values'][$clear_target]);
+              }
+            }
           }
           break;
 
@@ -253,7 +264,7 @@ function _taxonomy_feeds_extract_tid($item) {
  * @param string $guid
  *   The Feeds GUID to compare against.
  *
- * @return int|FALSE
+ * @return int|false
  *   The term id, or FALSE if one was not found.
  */
 function taxonomy_feeds_term_lookup_term_by_guid($guid) {

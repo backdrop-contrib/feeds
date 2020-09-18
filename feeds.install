@@ -55,6 +55,41 @@ function feeds_requirements($phase) {
 }
 
 /**
+ * Implements hook_install().
+ */
+function feeds_install() {
+  // Activate our custom cache handler for the HTTP cache.
+  config_set('feeds.settings', 'cache_class_cache_feeds_http', 'FeedsHTTPCache');
+
+  // If view already exists make sure it's enabled.
+  $config = config('views.view.feeds_log');
+  $config->set('disabled', FALSE);
+  $config->save();
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function feeds_uninstall() {
+  // Remove Feeds related jobs from job scheduler.
+  $names = db_or()
+    ->condition('name', 'feeds_source_import')
+    ->condition('name', 'feeds_source_clear')
+    ->condition('name', 'feeds_source_expire')
+    ->condition('name', 'feeds_push_unsubscribe');
+
+  db_delete('job_schedule')
+    ->condition($names)
+    ->execute();
+
+  // Remove view
+  $config = config('views.view.feeds_log');
+  $config->delete();
+  // Clear admin bar cache to remove view from menu
+  cache('admin_bar')->flush();
+}
+
+/**
  * Implements hook_schema().
  */
 function feeds_schema() {
@@ -161,11 +196,12 @@ function feeds_schema() {
       'guid' => array(
         'type' => 'text',
         'not null' => TRUE,
-        'description' => 'Unique identifier for the feed item.'
+        'description' => 'Unique identifier for the feed item.',
       ),
       'hash' => array(
         'type' => 'varchar',
-        'length' => 32, // The length of an MD5 hash.
+        // 32 is the length of an MD5 hash.
+        'length' => 32,
         'not null' => TRUE,
         'default' => '',
         'description' => 'The hash of the source item.',
@@ -320,16 +356,6 @@ function feeds_schema() {
 }
 
 /**
- * Implements hook_install().
- */
-function feeds_install() {
-  // If view already exists make sure it's enabled.
-  $config = config('views.view.feeds_log');
-  $config->set('disabled', FALSE);
-  $config->save();
-}
-
-/**
  * Implements hook_disable().
  */
 function feeds_disable() {
@@ -337,17 +363,6 @@ function feeds_disable() {
   $config = config('views.view.feeds_log');
   $config->set('disabled', TRUE);
   $config->save();
-}
-
-/**
- * Implements hook_uninstall().
- */
-function feeds_uninstall() {
-  // Remove view
-  $config = config('views.view.feeds_log');
-  $config->delete();
-  // Clear admin bar cache to remove view from menu
-  cache('admin_bar')->flush();
 }
 
 /**
@@ -447,4 +462,23 @@ function feeds_update_1003() {
     }
     db_drop_table('feeds_importer');
   }
+}
+
+/**
+ * Set cache class for Feeds HTTP cache.
+ */
+function feeds_update_7213() {
+  // Check if Feeds is enabled first.
+  if (!class_exists('FeedsHTTPCache') && !module_exists('feeds')) {
+    throw new BackdropUpdateException('Please enable the Feeds module to perform this update.');
+  }
+
+  // Abort when the FeedsHTTPCache class is not yet found to avoid fatal errors
+  // in _cache_get_object().
+  if (!class_exists('FeedsHTTPCache')) {
+    throw new BackdropUpdateException('Setting the cache class for the cache_feeds_http bin failed because the FeedsHTTPCache class could not be found. Please rebuild the Backdrop class registry and perform database updates again.');
+  }
+
+  // Activate our custom cache handler for the HTTP cache.
+  config_set('feeds.settings', 'cache_class_cache_feeds_http', 'FeedsHTTPCache');
 }

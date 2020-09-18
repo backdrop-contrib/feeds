@@ -20,6 +20,9 @@ class Feedsi18nNodeTestCase extends Feedsi18nTestCase {
    */
   private $contentType;
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Multilingual content',
@@ -29,6 +32,9 @@ class Feedsi18nNodeTestCase extends Feedsi18nTestCase {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp($modules = array(), $permissions = array()) {
     $this->entityType = 'node';
     $this->processorName = 'FeedsNodeProcessor';
@@ -136,4 +142,5 @@ class Feedsi18nNodeTestCase extends Feedsi18nTestCase {
       $this->assertEqual(LANGUAGE_NONE, $language, format_string('The node is language neutral (actual: !language).', array('!language' => $language)));
     }
   }
+
 }
