@@ -29,7 +29,7 @@ class FeedsUserProcessor extends FeedsProcessor {
    */
   protected function entityInfo() {
     $info = parent::entityInfo();
-    $info['label plural'] = t('Users');
+    $info['label plural'] = t('User Accounts');
     return $info;
   }
 
@@ -61,8 +61,11 @@ class FeedsUserProcessor extends FeedsProcessor {
    */
   protected function entityValidate($account) {
     parent::entityValidate($account);
-    if (empty($account->name) || empty($account->mail) || !valid_email_address($account->mail)) {
-      throw new FeedsValidationException(t('User name missing or email not valid.'));
+    if (empty($account->name) || empty($account->mail)) {
+      throw new FeedsValidationException(t('User name or email missing.'));
+    }
+    if (!valid_email_address(trim($account->mail))) {
+      throw new FeedsValidationException(t('Email not valid.'));
     }
   }
 
