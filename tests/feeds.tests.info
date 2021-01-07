@@ -1,6 +1,6 @@
 [CommonSyndicationParserTestCase]
-name = CommonSyndicationParserTestCase
-description = TBD
+name = Common Syndication Parser
+description = Unit tests for Common Syndication Parser.
 group = Feeds
 file = common_syndication_parser.test
 
@@ -15,6 +15,12 @@ name = FeedsUnitTestCase
 description = TBD
 group = Feeds
 file = feeds.test
+
+[FeedsContentTypeTest]
+name = Feed content type
+description = Tests behavior for when an importer is attached to a content type.
+group = Feeds
+file = feeds_content_type.test
 
 [FeedsDateTimeTest]
 name = FeedsDateTimeTest
@@ -189,6 +195,36 @@ name = FeedsSchedulerTestCase
 description = TBD
 group = Feeds
 file = feeds_scheduler.test
+
+[FeedsAccountSwitcherTest]
+name = Feeds account switcher test
+description = Tests if switching accounts during import happens properly.
+group = Feeds
+file = FeedsAccountSwitcherTest.test
+
+[FeedsEnclosureTest]
+name = FeedsEnclosure class test
+description = Covers class FeedsEnclosure.
+group = Feeds
+file = FeedsEnclosureTest.test
+
+[FeedsFetcherResultTest]
+name = FeedsFetcherResult class test
+description = Covers class FeedsFetcherResult.
+group = Feeds
+file = FeedsFetcherResultTest.test
+
+[FeedsHTTPCacheTest]
+name = FeedsHTTPCache class test
+description = Covers class FeedsHTTPCache.
+group = Feeds
+file = FeedsHTTPCacheTest.test
+
+[FeedsSourceTest]
+name = FeedsSource class test
+description = Covers class FeedsSource.
+group = Feeds
+file = FeedsSourceTest.test
 
 [FeedsHTTPRequestTestCase]
 name = FeedsHTTPRequestTestCase

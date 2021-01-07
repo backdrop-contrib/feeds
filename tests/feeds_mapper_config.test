@@ -12,6 +12,9 @@ include_once 'feeds.test';
  */
 class FeedsMapperConfigTestCase extends FeedsMapperTestCase {
 
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Mapper: Config',
@@ -20,6 +23,9 @@ class FeedsMapperConfigTestCase extends FeedsMapperTestCase {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp(array('feeds_tests'));
   }

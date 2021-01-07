@@ -107,6 +107,16 @@ abstract class FeedsPlugin extends FeedsConfigurable implements FeedsSourceInter
   }
 
   /**
+   * Overrides FeedsConfigurable::configDefaults().
+   *
+   * Invokes a hook to add in additional default configuration.
+   */
+  public function configDefaults() {
+    $hook = 'feeds_' . $this->pluginType() . '_config_defaults';
+    return module_invoke_all($hook, $this) + parent::configDefaults();
+  }
+
+  /**
    * Returns TRUE if $this->sourceForm() returns a form.
    */
   public function hasSourceConfig() {
@@ -163,7 +173,7 @@ abstract class FeedsPlugin extends FeedsConfigurable implements FeedsSourceInter
       $files = backdrop_system_listing('/.*\.inc$/', $path, 'name', 0);
       foreach ($files as $file) {
         if (strstr($file->uri, '/mappers/')) {
-          require_once(BACKDROP_ROOT . '/' . $file->uri);
+          require_once BACKDROP_ROOT . '/' . $file->uri;
         }
       }
     }
@@ -276,16 +286,24 @@ abstract class FeedsPlugin extends FeedsConfigurable implements FeedsSourceInter
 
     return $dependencies;
   }
+
 }
 
 /**
  * Used when a plugin is missing.
  */
 class FeedsMissingPlugin extends FeedsPlugin {
+
+  /**
+   * {@inheritdoc}
+   */
   public function pluginType() {
     return 'missing';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function save() {}
 
   /**
@@ -295,20 +313,38 @@ class FeedsMissingPlugin extends FeedsPlugin {
     return new FeedsFetcherResult('');
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function clear(FeedsSource $source) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function request($feed_nid = 0) {
     backdrop_access_denied();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function menuItem() {
     return array();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function subscribe(FeedsSource $source) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function unsubscribe(FeedsSource $source) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function importPeriod(FeedsSource $source) {}
 
   /**
@@ -318,6 +354,9 @@ class FeedsMissingPlugin extends FeedsPlugin {
     return new FeedsParserResult();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getMappingSources() {
     return array();
   }
@@ -327,32 +366,59 @@ class FeedsMissingPlugin extends FeedsPlugin {
    */
   public function process(FeedsSource $source, FeedsParserResult $parser_result) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function entityType() {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function bundle() {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function bundleOptions() {
     return array();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getLimit() {
     return 0;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getMappings() {
     return array();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getMappingTargets() {
     return array();
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function expire(FeedsSource $source, $time = NULL) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public function itemCount(FeedsSource $source) {
     return 0;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function expiryTime() {
     return FEEDS_EXPIRE_NEVER;
   }

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Tests for plugins/FeedsTermProcessor.inc
+ * Tests for plugins/FeedsTermProcessor.inc.
  */
 
 include_once 'feeds.test';
@@ -11,6 +11,10 @@ include_once 'feeds.test';
  * Test aggregating a feed as data records.
  */
 class FeedsCSVtoTermsTest extends FeedsWebTestCase {
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Processor: Taxonomy',

@@ -1,0 +1,6 @@
+name = "Feeds test field"
+description = "Provides a field with special validation."
+package = Testing
+core = 7.x
+hidden = TRUE
+dependencies[] = text

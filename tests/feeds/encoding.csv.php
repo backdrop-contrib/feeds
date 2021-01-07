@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Result of encoding_{code}.csv file parsed by ParserCSV.inc
+ * Result of encoding_{code}.csv file parsed by ParserCSV.inc.
  */
 
 include_once 'feeds.test';

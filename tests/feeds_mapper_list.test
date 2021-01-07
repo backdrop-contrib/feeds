@@ -8,9 +8,13 @@
 include_once 'feeds.test';
 
 /**
- * Test case for List field mappers in mappers/list.inc
+ * Test case for List field mappers in mappers/list.inc.
  */
 class FeedsMapperListTestCase extends FeedsMapperTestCase {
+
+  /**
+   * {@inheritdoc}
+   */
   public static function getInfo() {
     return array(
       'name' => 'Mapper: List and Boolean',
@@ -20,6 +24,9 @@ class FeedsMapperListTestCase extends FeedsMapperTestCase {
     );
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp(array('list'));
   }
@@ -61,7 +68,7 @@ class FeedsMapperListTestCase extends FeedsMapperTestCase {
     $this->setPlugin('csv', 'FeedsCSVParser');
     $this->setSettings('csv', 'FeedsNodeProcessor', array(
       'bundle' => $typename,
-      'update_existing' => 1
+      'update_existing' => 1,
     ));
     $this->addMappings('csv', array(
       array(
@@ -179,4 +186,5 @@ class FeedsMapperListTestCase extends FeedsMapperTestCase {
     $node = node_load(1, NULL, TRUE);
     $this->assertTrue(empty($node->field_epsilon[LANGUAGE_NONE]), 'The field field_epsilon is empty.');
   }
+
 }
