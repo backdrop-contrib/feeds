@@ -150,7 +150,7 @@ function feeds_http_request($url, array $options = array()) {
 
   // Make sure a request timeout is set.
   if (empty($options['timeout'])) {
-    $options['timeout'] = variable_get('http_request_timeout', 30);
+    $options['timeout'] = config_get('feeds.settings', 'http_request_timeout');
   }
 
   // Intra-pagedownload cache, avoid to download the same content twice within

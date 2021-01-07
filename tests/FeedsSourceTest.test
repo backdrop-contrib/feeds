@@ -7,17 +7,6 @@
 class FeedsSourceTest extends FeedsWebTestCase {
 
   /**
-   * {@inheritdoc}
-   */
-  public static function getInfo() {
-    return array(
-      'name' => 'FeedsSource class test',
-      'description' => 'Covers class FeedsSource.',
-      'group' => 'Feeds',
-    );
-  }
-
-  /**
    * Tests if two sources can be imported in the same request.
    */
   public function testProgrammaticImport() {

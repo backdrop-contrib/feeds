@@ -372,7 +372,7 @@ class FeedsCSVtoUsersTest extends FeedsWebTestCase {
       4 => array(
         'source' => 'rids',
         'target' => 'roles_list',
-        'role_search' => FeedsUserProcessor::ROLE_SEARCH_RID,
+        'role_search' => FeedsUserProcessor::ROLE_SEARCH_NAME,
       ),
     ));
 

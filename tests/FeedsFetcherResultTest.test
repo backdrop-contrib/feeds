@@ -36,17 +36,6 @@ class FeedsFetcherResultTest extends FeedsWebTestCase {
   /**
    * {@inheritdoc}
    */
-  public static function getInfo() {
-    return array(
-      'name' => 'FeedsFetcherResult class test',
-      'description' => 'Covers class FeedsFetcherResult.',
-      'group' => 'Feeds',
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp() {
     parent::setUp();
 

@@ -7,17 +7,6 @@
 class FeedsEnclosureTest extends FeedsWebTestCase {
 
   /**
-   * {@inheritdoc}
-   */
-  public static function getInfo() {
-    return array(
-      'name' => 'FeedsEnclosure class test',
-      'description' => 'Covers class FeedsEnclosure.',
-      'group' => 'Feeds',
-    );
-  }
-
-  /**
    * Tests getting content from an URL that failed to parse.
    *
    * @see ::getUrlParseErrorDataProvider()

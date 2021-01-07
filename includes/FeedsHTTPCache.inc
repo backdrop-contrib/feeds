@@ -20,7 +20,7 @@ class FeedsHTTPCache extends BackdropDatabaseCache {
    *   An instance of FeedsHTTPCache.
    */
   public static function getInstance($bin) {
-    $cache_object = _cache_get_object($bin);
+    $cache_object = cache($bin);
     if (!($cache_object instanceof self)) {
       // A different cache class could be used for the cache_feeds_http bin that
       // does not extend FeedsHTTPCache. In this case, just instantiate the
@@ -37,7 +37,7 @@ class FeedsHTTPCache extends BackdropDatabaseCache {
    *   The cache dir to use.
    */
   public function getCacheDir() {
-    $dir = variable_get('feeds_http_file_cache_dir', NULL);
+    $dir = config_get('feeds.settings', 'feeds_http_file_cache_dir');
     if ($dir) {
       return $dir;
     }
@@ -193,12 +193,11 @@ class FeedsHTTPCache extends BackdropDatabaseCache {
   public function clear($cid = NULL, $wildcard = FALSE) {
     if (empty($cid)) {
       // Clean up expired cached files.
-      $cache_lifetime = variable_get('cache_lifetime', 0);
+      $cache_lifetime = config_get('system.core', 'page_cache_maximum_age');
 
       // Check if expired cached files should be cleaned up now.
       if ($cache_lifetime) {
-        $cache_flush = variable_get('cache_flush_' . $this->bin, 0);
-        $flush_expired = $cache_flush && REQUEST_TIME > ($cache_flush + $cache_lifetime);
+        $flush_expired = REQUEST_TIME > $cache_lifetime;
       }
       else {
         $flush_expired = TRUE;

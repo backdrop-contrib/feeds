@@ -17,14 +17,14 @@ define('FEEDS_BLOCK_NON_EXISTENT', 'block');
  */
 class FeedsUserProcessor extends FeedsProcessor {
   /**
+   * Search by role label.
+   */
+  const ROLE_SEARCH_LABEL = 'label';
+
+  /**
    * Search by role name.
    */
   const ROLE_SEARCH_NAME = 'name';
-
-  /**
-   * Search by role id.
-   */
-  const ROLE_SEARCH_RID = 'rid';
 
   /**
    * Unencrypted password.
@@ -276,8 +276,8 @@ class FeedsUserProcessor extends FeedsProcessor {
 
     // Assign additional roles as configured.
     $roles = array_filter($this->config['roles']);
-    foreach ($roles as $rid) {
-      $target_item->roles[$rid] = $rid;
+    foreach ($roles as $role_name) {
+      $target_item->roles[$role_name] = $role_name;
     }
 
     return $target_item;
@@ -463,11 +463,11 @@ class FeedsUserProcessor extends FeedsProcessor {
   public function rolesListDefaults() {
     $roles = user_roles(TRUE);
     unset($roles[BACKDROP_AUTHENTICATED_ROLE]);
-    $rids = array_keys($roles);
-    $rids = array_combine($rids, $rids);
+    $role_names = array_keys($roles);
+    $role_names = array_combine($role_names, $role_names);
     return array(
-      'role_search' => self::ROLE_SEARCH_NAME,
-      'allowed_roles' => $rids,
+      'role_search' => self::ROLE_SEARCH_LABEL,
+      'allowed_roles' => $role_names,
       'autocreate' => 0,
       'revoke_roles' => 1,
     );
@@ -489,16 +489,16 @@ class FeedsUserProcessor extends FeedsProcessor {
     $options[] = t('Search roles by: <strong>@search</strong>', array('@search' => $role_search_options[$mapping['role_search']]));
 
     // Allowed roles.
-    $role_names = array();
+    $role_labels = array();
     $roles = user_roles(TRUE);
-    foreach (array_filter($mapping['allowed_roles']) as $rid => $enabled) {
-      $role_names[] = $roles[$rid];
+    foreach (array_filter($mapping['allowed_roles']) as $role_name => $enabled) {
+      $role_labels[] = $roles[$role_name];
     }
 
-    if (empty($role_names)) {
-      $role_names = array('<' . t('none') . '>');
+    if (empty($role_labels)) {
+      $role_labels = array('<' . t('none') . '>');
     }
-    $options[] = t('Allowed roles: %roles', array('%roles' => implode(', ', $role_names)));
+    $options[] = t('Allowed roles: %roles', array('%roles' => implode(', ', $role_labels)));
 
     // Autocreate.
     if ($mapping['autocreate']) {
@@ -565,8 +565,8 @@ class FeedsUserProcessor extends FeedsProcessor {
    */
   public function rolesListRoleSearchOptions() {
     return array(
+      self::ROLE_SEARCH_LABEL => t('Role label'),
       self::ROLE_SEARCH_NAME => t('Role name'),
-      self::ROLE_SEARCH_RID => t('Role ID'),
     );
   }
 
@@ -582,8 +582,8 @@ class FeedsUserProcessor extends FeedsProcessor {
     // Eventually revoke roles. Do not touch roles that are not allowed to set
     // by the source.
     if ($mapping['revoke_roles']) {
-      foreach ($mapping['allowed_roles'] as $rid) {
-        unset($entity->roles[$rid]);
+      foreach ($mapping['allowed_roles'] as $role_name) {
+        unset($entity->roles[$role_name]);
       }
     }
 
@@ -597,29 +597,29 @@ class FeedsUserProcessor extends FeedsProcessor {
       }
 
       switch ($mapping['role_search']) {
-        case self::ROLE_SEARCH_NAME:
-          $role = user_role_load_by_name($value);
+        case self::ROLE_SEARCH_LABEL:
+          $role = user_role_load($value);
           if (!$role && !empty($mapping['autocreate'])) {
             // Create new role if role doesn't exist.
             $role = new stdClass();
-            $role->name = $value;
+            $role->label = $value;
             user_role_save($role);
-            $role = user_role_load_by_name($role->name);
+            $role = user_role_load($role->label);
           }
           break;
 
-        case self::ROLE_SEARCH_RID:
+        case self::ROLE_SEARCH_NAME:
           $role = user_role_load($value);
           break;
       }
 
       if ($role) {
         // Check if the role may be assigned.
-        if (isset($mapping['allowed_roles'][$role->rid]) && !$mapping['allowed_roles'][$role->rid]) {
-          // This role may *not* be assiged.
+        if (isset($mapping['allowed_roles'][$role->name]) && !$mapping['allowed_roles'][$role->name]) {
+          // This role may *not* be assigned.
           continue;
         }
-        $entity->roles[$role->rid] = $role->name;
+        $entity->roles[$role->name] = $role->label;
       }
     }
   }

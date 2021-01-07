@@ -474,7 +474,7 @@ class FeedsEnclosure extends FeedsElement {
       file_prepare_directory($destination, FILE_MODIFY_PERMISSIONS | FILE_CREATE_DIRECTORY);
       // Copy or save file depending on whether it is remote or local.
       if (backdrop_realpath($this->getSanitizedUri())) {
-        $file = new stdClass();
+        $file = new File();
         $file->uid = 0;
         $file->uri = $this->getSanitizedUri();
         $file->filemime = $this->getMIMEType();

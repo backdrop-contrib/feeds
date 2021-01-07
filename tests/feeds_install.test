@@ -50,14 +50,14 @@ class FeedsModuleInstallUninstallWebTest extends BackdropWebTestCase {
     $this->assertTrue(module_exists('feeds'));
     $this->assertTrue(module_exists('feeds_ui'));
 
-    // Ensure the variable 'cache_class_cache_feeds_http' is set.
-    $this->assertEqual('FeedsHTTPCache', variable_get('cache_class_cache_feeds_http'));
+    // Ensure the setting 'cache_class_cache_feeds_http' is set.
+    $this->assertEqual('FeedsHTTPCache', settings_get('cache_class_cache_feeds_http'));
 
     // Uninstall module.
     $this->uninstallFeeds();
 
-    // Ensure the variable 'cache_class_cache_feeds_http' is removed.
-    $this->assertNull(variable_get('cache_class_cache_feeds_http'), 'The variable "cache_class_cache_feeds_http" is removed.');
+    // Ensure the setting 'cache_class_cache_feeds_http' is removed.
+    $this->assertNull(settings_get('cache_class_cache_feeds_http'), 'The variable "cache_class_cache_feeds_http" is removed.');
   }
 
   /**

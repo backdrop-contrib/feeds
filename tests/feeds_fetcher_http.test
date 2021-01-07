@@ -315,12 +315,13 @@ class FeedsFileHTTPTestCase extends FeedsWebTestCase {
    * This can happen when using Memcache or Redis for all cache bins.
    */
   public function testHTTPCacheOverride() {
+    global $settings;
     // Revert back to the default cache class.
-    variable_set('cache_class_cache_feeds_http', 'BackdropDatabaseCache');
+    $settings['cache_class_cache_feeds_http'] = 'BackdropDatabaseCache';
 
     // Import. We cannot test with a simple feeds_http_request() call here,
     // because there is no way to override a cache class on a single request.
-    // @see _cache_get_object().
+    // @see cache().
     $this->setUpImporter();
     $source_url = url('testing/feeds/nodes.csv', array('absolute' => TRUE));
     $edit = array(
@@ -349,8 +350,10 @@ class FeedsFileHTTPTestCase extends FeedsWebTestCase {
    * used.
    */
   public function testCachedFilesCleanupOnHTTPCacheOverride() {
+    global $settings;
+
     // Revert back to the default cache class.
-    variable_set('cache_class_cache_feeds_http', 'BackdropDatabaseCache');
+    $settings['cache_class_cache_feeds_http'] = 'BackdropDatabaseCache';
 
     // Create a real cached file by performing an import.
     $this->setUpImporter();

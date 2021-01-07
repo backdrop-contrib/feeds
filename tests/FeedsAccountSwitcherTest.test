@@ -13,17 +13,6 @@ class FeedsAccountSwitcherTest extends FeedsMapperTestCase {
   /**
    * {@inheritdoc}
    */
-  public static function getInfo() {
-    return array(
-      'name' => 'Feeds account switcher test',
-      'description' => 'Tests if switching accounts during import happens properly.',
-      'group' => 'Feeds',
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp() {
     parent::setUp();
 
@@ -159,14 +148,14 @@ class FeedsAccountSwitcherTest extends FeedsMapperTestCase {
 
     // Create a role with permission to create content and permission to edit
     // fields of type 'feeds_test_field'.
-    $rid1 = $this->backdropCreateRole(array(
+    $role_name1 = $this->backdropCreateRole(array(
       'access content',
       'create ' . $typename . ' content',
       'feeds_test_field.edit',
     ));
     // Create also a role that only may create content, but may NOT edit fields
     // of type 'feeds_test_field'.
-    $rid2 = $this->backdropCreateRole(array(
+    $role_name2 = $this->backdropCreateRole(array(
       'access content',
       'create ' . $typename . ' content',
     ));
@@ -179,7 +168,7 @@ class FeedsAccountSwitcherTest extends FeedsMapperTestCase {
       'pass' => 'mort',
       'status' => 1,
       'roles' => array(
-        $rid1 => $rid1,
+        $role_name1 => $role_name1,
       ),
     ));
     // Fester may not edit feeds_test_field fields.
@@ -189,7 +178,7 @@ class FeedsAccountSwitcherTest extends FeedsMapperTestCase {
       'pass' => 'fester',
       'status' => 1,
       'roles' => array(
-        $rid2 => $rid2,
+        $role_name2 => $role_name2,
       ),
     ));
 

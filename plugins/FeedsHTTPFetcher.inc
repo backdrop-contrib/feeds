@@ -233,7 +233,7 @@ class FeedsHTTPFetcher extends FeedsFetcher {
       '#type' => 'number',
       '#title' => t('Request timeout'),
       '#description' => t('Timeout in seconds to wait for an HTTP get request to finish.') . '<br />' . t('<strong>Note:</strong> if left empty, the global timeout setting will be used, which is @timeout seconds. You can set the global timeout setting by setting the variable "@variable".', array(
-        '@timeout' => variable_get('http_request_timeout', 30),
+        '@timeout' => config_get('feeds.settings', 'http_request_timeout'),
         '@variable' => 'http_request_timeout',
       )),
       '#default_value' => $this->config['request_timeout'],

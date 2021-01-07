@@ -423,7 +423,7 @@ function theme_feeds_source_status($v) {
 
   if ($v['next']) {
     // Check if medium date format contains hours/minutes.
-    $date_format = variable_get('date_format_medium');
+    $date_format = config_get('system.date', 'formats.medium.pattern');
     $use_custom_date_format = $date_format && !strpos($date_format, 'H:i');
 
     if (!empty($v['next']['message'])) {

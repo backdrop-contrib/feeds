@@ -147,12 +147,12 @@ class FeedsMapperFormatConfig extends FeedsMapperTestCase {
     $this->backdropPost('admin/config/content/formats/add', $edit1, t('Save configuration'));
 
     // Create filter format the user may NOT use.
-    $rid = $this->backdropCreateRole(array());
+    $role_name = $this->backdropCreateRole(array());
     $format2 = backdrop_strtolower($this->randomName());
     $edit2 = array(
       'format' => $format2,
       'name' => $this->randomName(),
-      'roles[' . $rid . ']' => TRUE,
+      'roles[' . $role_name . ']' => TRUE,
     );
     $this->backdropPost('admin/config/content/formats/add', $edit2, t('Save configuration'));
 

@@ -22,17 +22,6 @@ class FeedsHTTPCacheTest extends FeedsWebTestCase {
   /**
    * {@inheritdoc}
    */
-  public static function getInfo() {
-    return array(
-      'name' => 'FeedsHTTPCache class test',
-      'description' => 'Covers class FeedsHTTPCache.',
-      'group' => 'Feeds',
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp() {
     parent::setUp();
 
@@ -402,7 +391,7 @@ class FeedsHTTPCacheTest extends FeedsWebTestCase {
 
     // Call clear. Nothing should be cleared because the last cache flush was
     // too recently.
-    variable_set('cache_flush_cache_feeds_http', REQUEST_TIME - 90);
+    //variable_set('cache_flush_cache_feeds_http', REQUEST_TIME - 90);
     $this->cache->clear();
 
     // Ensure all cached files still exist as cache lifetime has not exceeded.
@@ -416,7 +405,7 @@ class FeedsHTTPCacheTest extends FeedsWebTestCase {
     $this->assertCacheFileExists($cid_expire_future);
 
     // Now do as if cache lifetime has passed.
-    variable_set('cache_flush_cache_feeds_http', REQUEST_TIME - 121);
+    //variable_set('cache_flush_cache_feeds_http', REQUEST_TIME - 121);
     $this->cache->clear();
 
     // Assert existence of cache entries.

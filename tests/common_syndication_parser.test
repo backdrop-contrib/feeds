@@ -18,17 +18,6 @@ class CommonSyndicationParserTestCase extends BackdropWebTestCase {
   /**
    * {@inheritdoc}
    */
-  public static function getInfo() {
-    return array(
-      'name' => 'Common Syndication Parser',
-      'description' => 'Unit tests for Common Syndication Parser.',
-      'group' => 'Feeds',
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp() {
     parent::setUp(array('feeds', 'feeds_ui', 'job_scheduler'));
     feeds_include_library('common_syndication_parser.inc', 'common_syndication_parser');

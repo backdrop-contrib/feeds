@@ -797,7 +797,7 @@ class FeedsRSStoNodesTest extends FeedsWebTestCase {
     node_types_rebuild();
 
     // Create a role with permission to create articles.
-    $rid = $this->backdropCreateRole(array(
+    $role_name = $this->backdropCreateRole(array(
       'access content',
       'create article content',
     ));
@@ -810,7 +810,7 @@ class FeedsRSStoNodesTest extends FeedsWebTestCase {
       'pass' => 'mort',
       'status' => 1,
       'roles' => array(
-        $rid => $rid,
+        $role_name => $role_name,
       ),
     ));
 
@@ -822,7 +822,7 @@ class FeedsRSStoNodesTest extends FeedsWebTestCase {
       'pass' => 'joe',
       'status' => 1,
       'roles' => array(
-        $rid => $rid,
+        $role_name => $role_name,
       ),
     ));
 

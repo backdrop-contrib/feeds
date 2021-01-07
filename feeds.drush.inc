@@ -663,14 +663,14 @@ function drush_feeds_enable() {
     return drush_log(dt('Aborting.'), 'ok');
   }
 
-  $disabled = variable_get('default_feeds_importer', array());
+  $disabled = config_get('feeds.settings', 'default_feeds_importer');
 
   foreach ($to_enable as $importer_id) {
     unset($disabled[$importer_id]);
     drush_log(dt("The importer '!importer' has been enabled.", array('!importer' => $importer_id)), 'ok');
   }
 
-  variable_set('default_feeds_importer', $disabled);
+  config_set('feeds.settings', 'default_feeds_importer', $disabled);
   feeds_cache_clear();
 }
 
@@ -706,13 +706,13 @@ function drush_feeds_disable() {
     return drush_log(dt('Aborting.'), 'ok');
   }
 
-  $disabled = variable_get('default_feeds_importer', array());
+  $disabled = config_get('feeds.settings', 'default_feeds_importer');
   foreach ($to_disable as $importer_id) {
     $disabled[$importer_id] = TRUE;
     drush_log(dt("The importer '!importer' has been disabled.", array('!importer' => $importer_id)), 'ok');
   }
 
-  variable_set('default_feeds_importer', $disabled);
+  config_set('feeds.settings', 'default_feeds_importer', $disabled);
   feeds_cache_clear();
 }
 

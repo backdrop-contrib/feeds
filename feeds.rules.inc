@@ -171,8 +171,7 @@ function feeds_action_skip_item_help() {
  */
 function feeds_importer_list() {
   $list = array();
-  ctools_include('export');
-  $configs = ctools_export_load_object('feeds_importer', 'all');
+  $configs = feeds_importer_load_all();
   foreach ($configs as $id => $config) {
     if (empty($config->disabled)) {
       $list[$id] = $config->config['name'];

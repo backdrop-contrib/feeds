@@ -161,7 +161,7 @@ function _date_feeds_get_default_timezone(array $mapping) {
   $mapping += array('timezone' => 'UTC');
 
   if ($mapping['timezone'] === '__SITE__') {
-    return variable_get('date_default_timezone', 'UTC');
+    return date_default_timezone_get();
   }
 
   return $mapping['timezone'];
@@ -202,7 +202,7 @@ function _date_feeds_get_date_object($value, DateTimeZone $default_tz) {
 
   // Support year values.
   if ((string) $value === (string) (int) $value) {
-    if ($value >= variable_get('date_min_year', 100) && $value <= variable_get('date_max_year', 4000)) {
+    if ($value >= DATE_MIN_YEAR && $value <= DATE_MAX_YEAR) {
       return new DateObject('January ' . $value, $default_tz);
     }
   }

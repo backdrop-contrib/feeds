@@ -39,7 +39,7 @@ function feeds_requirements($phase) {
 
     $folder = backdrop_get_path('module', 'feeds') . '/libraries';
     if (module_exists('libraries')) {
-      $folder = 'sites/all/libraries/simplepie';
+      $folder = 'libraries/simplepie';
     }
 
     $args = array(
@@ -58,9 +58,6 @@ function feeds_requirements($phase) {
  * Implements hook_install().
  */
 function feeds_install() {
-  // Activate our custom cache handler for the HTTP cache.
-  config_set('feeds.settings', 'cache_class_cache_feeds_http', 'FeedsHTTPCache');
-
   // If view already exists make sure it's enabled.
   $config = config('views.view.feeds_log');
   $config->set('disabled', FALSE);
@@ -416,11 +413,6 @@ function feeds_update_1001() {
   $config->clear('feeds_reschedule');
   $config->clear('menu_rebuild_needed');
   $config->clear('default_nodes_main');
-  $config->clear('proxy_server');
-  $config->clear('proxy_port');
-  $config->clear('proxy_username');
-  $config->clear('proxy_password');
-  $config->set('feeds_use_mbstring', TRUE);
   $config->save();
 }
 
@@ -465,20 +457,43 @@ function feeds_update_1003() {
 }
 
 /**
- * Set cache class for Feeds HTTP cache.
+ * Convert cache variables to config.
  */
-function feeds_update_7213() {
-  // Check if Feeds is enabled first.
-  if (!class_exists('FeedsHTTPCache') && !module_exists('feeds')) {
-    throw new BackdropUpdateException('Please enable the Feeds module to perform this update.');
-  }
+function feeds_update_1005() {
+  $config = config('feeds.settings');
+  $config->set('feeds_sync_cache_feeds_http_interval', update_variable_get('feeds_sync_cache_feeds_http_interval', 21600));
+  $config->set('feeds_http_file_cache_dir', update_variable_get('feeds_http_file_cache_dir', NULL));
+  $config->set('feeds_in_progress_dir', update_variable_get('feeds_in_progress_dir', NULL));
+  $config->save();
 
-  // Abort when the FeedsHTTPCache class is not yet found to avoid fatal errors
-  // in _cache_get_object().
-  if (!class_exists('FeedsHTTPCache')) {
-    throw new BackdropUpdateException('Setting the cache class for the cache_feeds_http bin failed because the FeedsHTTPCache class could not be found. Please rebuild the Backdrop class registry and perform database updates again.');
-  }
+  update_variable_del('feeds_sync_cache_feeds_http_interval');
+  update_variable_del('feeds_http_file_cache_dir');
 
-  // Activate our custom cache handler for the HTTP cache.
-  config_set('feeds.settings', 'cache_class_cache_feeds_http', 'FeedsHTTPCache');
+  // Don't need the cache class in config - we just hardcode it so
+  // settings_get() can use it.
+  // See feeds.module.
+  update_variable_del('cache_class_cache_feeds_http');
+
+  update_variable_del('feeds_in_progress_dir');
+}
+
+/**
+ * Add defaults for alternative feeds HTTP proxy.
+ */
+function feeds_update_1006() {
+  // These variables were mistakenly cleared earlier.
+  // Assuming the original variables still exist will convert them here.
+  $config = config('feeds.settings');
+  $config->set('proxy_auth_method', update_variable_get('proxy_auth_method', CURLAUTH_BASIC));
+  $config->set('proxy_server', update_variable_get('proxy_server', ''));
+  $config->set('proxy_port', update_variable_get('proxy_port', 8080));
+  $config->set('proxy_username', update_variable_get('proxy_username', ''));
+  $config->set('proxy_password', update_variable_get('proxy_password', ''));
+  $config->save();
+
+  update_variable_del('proxy_auth_method');
+  update_variable_del('proxy_server');
+  update_variable_del('proxy_port');
+  update_variable_del('proxy_username');
+  update_variable_del('proxy_password');
 }

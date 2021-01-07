@@ -25,7 +25,7 @@ class FeedsUIUserInterfaceTestCase extends FeedsWebTestCase {
    * {@inheritdoc}
    */
   public function setUp() {
-    parent::setUp(array('php', 'locale'), array('use PHP for settings', 'administer languages'));
+    parent::setUp(array('locale'), array('synchronize configuration', 'administer languages'));
   }
 
   /**

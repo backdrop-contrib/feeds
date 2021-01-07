@@ -93,7 +93,7 @@ class FeedsFetcherResult extends FeedsResult {
    *   The cache dir to use.
    */
   public function getFeedsInProgressDir() {
-    $dir = variable_get('feeds_in_progress_dir', NULL);
+    $dir = config_get('feeds.settings', 'feeds_in_progress_dir');
     if ($dir) {
       return $dir;
     }

@@ -17,6 +17,15 @@ define('FEEDS_BATCH_COMPLETE', 1.0);
 define('FEEDS_BATCH_ACTIVE', 0.0);
 
 /**
+ * Set the default class implementation for the Feeds HTTP Cache.
+ *
+ * Need to assign it to the global $settings here so it gets picked up whenever
+ * a cache function is called for this bin.
+ */
+global $settings;
+$settings['cache_class_cache_feeds_http'] = 'FeedsHTTPCache';
+
+/**
  * @defgroup hooks Hook and callback implementations
  * @{
  */
@@ -86,8 +95,8 @@ function feeds_cron() {
 
   // Sync the files in the cache directory with entries in the cache every now
   // and then. By default: every six hours.
-  $last_check = variable_get('feeds_sync_cache_feeds_http_last_check');
-  $interval = variable_get('feeds_sync_cache_feeds_http_interval', 21600);
+  $last_check = state_get('feeds_sync_cache_feeds_http_last_check');
+  $interval = config_get('feeds.settings', 'feeds_sync_cache_feeds_http_interval');
   if ($last_check < (REQUEST_TIME - $interval)) {
     // Check first if the task isn't already queued.
     $queue = BackdropQueue::get('feeds_sync_cache_feeds_http');
@@ -95,7 +104,7 @@ function feeds_cron() {
       // Queue sync task.
       FeedsHTTPCache::getInstance('cache_feeds_http')->startSync();
     }
-    variable_set('feeds_sync_cache_feeds_http_last_check', REQUEST_TIME);
+    state_set('feeds_sync_cache_feeds_http_last_check', REQUEST_TIME);
   }
 }
 
@@ -582,14 +591,14 @@ function feeds_access($action, $param) {
 /**
  * Access callback to determine if the user can import Feeds importers.
  *
- * Feeds imports require an additional access check because they are PHP
- * code and PHP is more locked down than administer feeds.
+ * Feeds imports require an additional access check because they are
+ * configuration.
  *
  * @return bool
  *   True if access is granted. False otherwise.
  */
 function feeds_importer_import_access() {
-  return user_access('administer feeds') && user_access('use PHP for settings');
+  return user_access('administer feeds') && user_access('synchronize configuration');
 }
 
 /**
@@ -956,16 +965,12 @@ function feeds_flush_caches() {
 }
 
 /**
- * Implements hook_admin_menu_output_build().
+ * Implements hook_admin_bar_output_build().
  *
  * Shows available importers in the "Content" section of the admin menu.
- * Requires the "admin_menu" module to be enabled.
+ * Requires the "admin_bar" module to be enabled.
  */
-function feeds_admin_menu_output_build(array &$content) {
-  // Add new top-level item to the menu.
-  if (!isset($content['menu'])) {
-    return;
-  }
+function feeds_admin_bar_output_build(array &$content) {
   $access = FALSE;
   foreach (feeds_enabled_importers() as $importer_id) {
     if (user_access('administer feeds') || user_access("import $importer_id feeds")) {
@@ -978,13 +983,8 @@ function feeds_admin_menu_output_build(array &$content) {
     return;
   }
 
-  $content['menu']['admin/content']['admin/content/feeds_import'] = array(
-    '#title' => t('Import'),
-    '#href' => 'import',
-  );
-
   foreach (feeds_importer_load_all() as $importer) {
-    $content['menu']['admin/content']['admin/content/feeds_import'][$importer->id] = array(
+    $content['menu']['menu']['admin/content']['admin/content/import'][$importer->id] = array(
       '#title' => check_plain($importer->config['name']),
       '#href' => !empty($importer->config['content_type']) ? 'node/add/' . str_replace('_', '-', $importer->config['content_type']) : 'import/' . check_plain($importer->id),
       '#access' => user_access('administer feeds') || user_access("import $importer->id feeds"),

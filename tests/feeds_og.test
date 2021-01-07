@@ -197,7 +197,7 @@ class FeedsOgTest extends FeedsWebTestCase {
     );
 
     // Create a role with permission to create content.
-    $rid = $this->backdropCreateRole(array(
+    $role_name = $this->backdropCreateRole(array(
       'access content',
       'create article content',
     ));
@@ -209,7 +209,7 @@ class FeedsOgTest extends FeedsWebTestCase {
       'pass' => 'mort',
       'status' => 1,
       'roles' => array(
-        $rid => $rid,
+        $role_name => $role_name,
       ),
     ));
     $fester = user_save(backdrop_anonymous_user(), array(
@@ -218,7 +218,7 @@ class FeedsOgTest extends FeedsWebTestCase {
       'pass' => 'fester',
       'status' => 1,
       'roles' => array(
-        $rid => $rid,
+        $role_name => $role_name,
       ),
     ));
 
