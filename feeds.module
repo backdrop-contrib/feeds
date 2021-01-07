@@ -17,13 +17,17 @@ define('FEEDS_BATCH_COMPLETE', 1.0);
 define('FEEDS_BATCH_ACTIVE', 0.0);
 
 /**
- * Set the default class implementation for the Feeds HTTP Cache.
- *
- * Need to assign it to the global $settings here so it gets picked up whenever
- * a cache function is called for this bin.
+ * Implements hook_boot().
  */
-global $settings;
-$settings['cache_class_cache_feeds_http'] = 'FeedsHTTPCache';
+function feeds_boot() {
+  // Set the default class implementation for the Feeds HTTP Cache if it's
+  // not set in settings.php. Need to assign it to the global $settings here so
+  // it gets picked up whenever a cache function is called for this bin.
+  if (empty(settings_get('cache_class_cache_feeds_http'))) {
+    global $settings;
+    $settings['cache_class_cache_feeds_http'] = 'FeedsHTTPCache';
+  }
+}
 
 /**
  * @defgroup hooks Hook and callback implementations
@@ -1658,7 +1662,7 @@ function feeds_autoload_info() {
   'FeedsAccountSwitcherException' => 'includes/FeedsAccountSwitcherException.inc',
   'FeedsConfigurable' => 'includes/FeedsConfigurable.inc',
   'FeedsHTTPCache' => 'includes/FeedsHTTPCache.inc',
-  'FeedsHTTPCacheItem' => 'includes/FeedsHTTPCache.inc',
+  'FeedsHTTPCacheItem' => 'includes/FeedsHTTPCacheItem.inc',
   'FeedsNotExistingException' => 'includes/FeedsConfigurable.inc',
   'FeedsImporter' => 'includes/FeedsImporter.inc',
   'FeedsLockException' => 'includes/FeedsSource.inc',
