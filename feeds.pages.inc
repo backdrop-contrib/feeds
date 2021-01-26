@@ -469,7 +469,7 @@ function theme_feeds_upload($variables) {
     }
     else {
       $summary .= t('URI scheme %scheme not available.', array(
-        '%scheme' => file_uri_scheme($uri),
+        '%scheme' => file_uri_scheme($file->uri),
       ));
     }
     $summary .= '</div>';
