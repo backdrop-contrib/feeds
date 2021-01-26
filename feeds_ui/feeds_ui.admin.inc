@@ -57,11 +57,12 @@ function feeds_ui_overview_form($form, array &$form_state) {
     t('Name'),
     t('Description'),
     t('Form'),
-    t('Operations'),
     t('Enabled'),
+    t('Operations'),
   );
   foreach (feeds_importer_load_all(TRUE) as $importer) {
     $importer_form = array();
+
     $importer_form['name']['#markup'] = check_plain($importer->config['name']);
     $importer_form['description']['#markup'] = check_plain($importer->config['description']);
     if (empty($importer->config['content_type'])) {
@@ -79,6 +80,11 @@ function feeds_ui_overview_form($form, array &$form_state) {
         $importer_form['attached']['#markup'] = check_plain(node_type_get_name($importer->config['content_type']));
       }
     }
+
+    $importer_form[$importer->id] = array(
+      '#type' => 'checkbox',
+      '#default_value' => !$importer->disabled,
+    );
 
     if (!$importer->disabled) {
       $links['edit'] = array(
@@ -113,11 +119,6 @@ function feeds_ui_overview_form($form, array &$form_state) {
     } else {
       $importer_form['operations']['#markup'] = t('Disabled');
     }
-
-    $importer_form[$importer->id] = array(
-      '#type' => 'checkbox',
-      '#default_value' => !$importer->disabled,
-    );
 
     if ($importer->disabled) {
       $form['disabled'][$importer->id] = $importer_form;
