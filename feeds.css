@@ -5,16 +5,16 @@
 
 /* For file uploads, display previously uploaded files on the left side. */
 .feeds-file-info {
-  float: left;
-  width: 200px;
+  display: inline-block;
   border-right: 1px solid #ccc;
+  padding-right: 10px;
   margin-right: 10px;
   margin-bottom: 10px;
 }
 
 /* For file uploads, display upload field on the right side. */
 .feeds-file-upload {
-  float: left;
+  display: inline-block;
 }
 
 /* Make sure file upload fields don't get too wide. */
