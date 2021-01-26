@@ -168,18 +168,18 @@ function _date_feeds_get_default_timezone(array $mapping) {
 }
 
 /**
- * Converts a date string or object into a DateObject.
+ * Converts a date string or object into a BackdropDateTime.
  *
  * @param DateTime|string|int $value
  *   The date value or object.
  * @param DateTimeZone $default_tz
  *   The default timezone.
  *
- * @return DateObject
- *   The converted DateObject.
+ * @return BackdropDateTime
+ *   The converted BackdropDateTime.
  */
 function _date_feeds_get_date_object($value, DateTimeZone $default_tz) {
-  if ($value instanceof DateObject) {
+  if ($value instanceof BackdropDateTime) {
     return $value;
   }
 
@@ -188,7 +188,7 @@ function _date_feeds_get_date_object($value, DateTimeZone $default_tz) {
     if (!$value->getTimezone() || !preg_match('/[a-zA-Z]/', $value->getTimezone()->getName())) {
       $value->setTimezone($default_tz);
     }
-    return new DateObject($value->format(DATE_FORMAT_ISO), $value->getTimezone());
+    return new BackdropDateTime($value->format(DATE_FORMAT_ISO), $value->getTimezone());
   }
 
   if (is_string($value) || is_object($value) && method_exists($value, '__toString')) {
@@ -203,9 +203,9 @@ function _date_feeds_get_date_object($value, DateTimeZone $default_tz) {
   // Support year values.
   if ((string) $value === (string) (int) $value) {
     if ($value >= DATE_MIN_YEAR && $value <= DATE_MAX_YEAR) {
-      return new DateObject('January ' . $value, $default_tz);
+      return new BackdropDateTime('January ' . $value, $default_tz);
     }
   }
 
-  return new DateObject($value, $default_tz);
+  return new BackdropDateTime($value, $default_tz);
 }
