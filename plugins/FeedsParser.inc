@@ -697,7 +697,7 @@ class FeedsDateTimeElement extends FeedsElement {
  *
  * @see FeedsDateTimeElement
  *
- * @deprecated Use DateObject instead.
+ * @deprecated Use BackdropDateTime instead.
  */
 class FeedsDateTime extends DateTime {
   public $granularity = array();
