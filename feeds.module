@@ -1390,7 +1390,7 @@ function feeds_load_importer_object($importer_id = NULL) {
     $object->config = $data['config'];
     $object->table = $table;
     $object->type = t('Normal');
-    $object->disabled = $data['disabled'];
+    $object->disabled = isset($data['disabled'])? $data['disabled']: FALSE;
 
     $cache[$object->id] = $object;
   }
