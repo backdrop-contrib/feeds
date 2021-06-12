@@ -104,7 +104,7 @@ function taxonomy_feeds_set_target(FeedsSource $source, $entity, $target, array 
     foreach ($info['settings']['allowed_values'] as $tree) {
       if ($vocabulary = taxonomy_vocabulary_load($tree['vocabulary'])) {
         $cache['allowed_vocabularies'][$target][$vocabulary->machine_name] = $vocabulary->machine_name;
-        $cache['vocabulary_targets'][$vocabulary][] = $target;
+        $cache['vocabulary_targets'][$vocabulary->machine_name][] = $target;
       }
     }
   }
