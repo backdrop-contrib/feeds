@@ -770,6 +770,7 @@ class FeedsMapperFileTestCase extends FeedsMapperTestCase {
 
     // Enable title and alt mapping.
     $edit = array(
+      'instance[settings][file_directory]' => '',
       'instance[settings][alt_field]' => 1,
       'instance[settings][title_field]' => 1,
     );
