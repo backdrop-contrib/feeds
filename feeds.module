@@ -1411,9 +1411,7 @@ function feeds_library_exists($file, $library) {
 function feeds_simplepie_exists() {
   return (
     feeds_library_exists('autoloader.php', 'simplepie') ||
-    feeds_library_exists('simplepie.compiled.php', 'simplepie') ||
-    feeds_library_exists('simplepie.mini.php', 'simplepie') ||
-    feeds_library_exists('simplepie.inc', 'simplepie')
+    feeds_library_exists('library/SimplePie.php', 'simplepie')
   );
 }
 
@@ -1423,9 +1421,7 @@ function feeds_simplepie_exists() {
 function feeds_include_simplepie() {
   $files = array(
     'autoloader.php',
-    'simplepie.mini.php',
-    'simplepie.compiled.php',
-    'simplepie.inc',
+    'library/SimplePie.php',
   );
 
   foreach ($files as $file) {
