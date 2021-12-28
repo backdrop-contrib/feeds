@@ -672,11 +672,15 @@ class FeedsWebTestCase extends DrupalWebTestCase {
    */
   public function getNid($url) {
     $matches = array();
-    preg_match('/node\/(\d+?)$/', $url, $matches);
-    $nid = $matches[1];
-
-    // Test for actual integerness.
-    $this->assertIdentical($nid, (string) (int) $nid);
+    $nid = NULL;
+    if (preg_match('/node\/(\d+?)$/', $url, $matches)) {
+      $nid = $matches[1];
+      // Test for actual integerness.
+      $this->assertIdentical($nid, (string) (int) $nid);
+    }
+    else {
+      $this->fail(t('URL did not contain nid: @url', array('@url' => $url)));
+    }
 
     return $nid;
   }
