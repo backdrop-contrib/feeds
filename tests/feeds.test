@@ -676,7 +676,7 @@ class FeedsWebTestCase extends DrupalWebTestCase {
     $nid = $matches[1];
 
     // Test for actual integerness.
-    $this->assertTrue($nid === (string) (int) $nid, 'Node id is an integer.');
+    $this->assertIdentical($nid, (string) (int) $nid);
 
     return $nid;
   }
