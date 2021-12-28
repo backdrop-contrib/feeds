@@ -773,7 +773,6 @@ class FeedsMapperFileTestCase extends FeedsMapperTestCase {
       'instance[settings][file_directory]' => '',
       'instance[settings][alt_field]' => 1,
       'instance[settings][title_field]' => 1,
-      'instance[settings][file_directory]' => '',
     );
     $this->drupalPost("admin/structure/types/manage/$typename/fields/field_images", $edit, t('Save settings'));
 
