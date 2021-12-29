@@ -5,7 +5,7 @@ core = 7.x
 dependencies[] = ctools
 dependencies[] = job_scheduler
 
-test_dependencies[] = ctools:ctools (<= 7.x-1.12)
+test_dependencies[] = ctools:ctools
 test_dependencies[] = date:date
 test_dependencies[] = entity_translation:entity_translation
 test_dependencies[] = feeds_xpathparser:feeds_xpathparser
