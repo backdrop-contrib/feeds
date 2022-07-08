@@ -607,11 +607,15 @@ class FeedsDateTimeElement extends FeedsElement {
    */
   protected static function readDateField($entity, $field_name, $delta = 0, $language = LANGUAGE_NONE) {
     $ret = new FeedsDateTimeElement();
-    if (isset($entity->{$field_name}[$language][$delta]['date']) && $entity->{$field_name}[$language][$delta]['date'] instanceof FeedsDateTime) {
-      $ret->start = $entity->{$field_name}[$language][$delta]['date'];
-    }
-    if (isset($entity->{$field_name}[$language][$delta]['date2']) && $entity->{$field_name}[$language][$delta]['date2'] instanceof FeedsDateTime) {
-      $ret->end = $entity->{$field_name}[$language][$delta]['date2'];
+    if (!empty($entity->{$field_name}[$language][$delta])) {
+      if (isset($entity->{$field_name}[$language][$delta]['date']) &&
+        $entity->{$field_name}[$language][$delta]['date'] instanceof FeedsDateTime) {
+        $ret->start = $entity->{$field_name}[$language][$delta]['date'];
+      }
+      if (isset($entity->{$field_name}[$language][$delta]['date2']) &&
+        $entity->{$field_name}[$language][$delta]['date2'] instanceof FeedsDateTime) {
+        $ret->end = $entity->{$field_name}[$language][$delta]['date2'];
+      }
     }
     return $ret;
   }
