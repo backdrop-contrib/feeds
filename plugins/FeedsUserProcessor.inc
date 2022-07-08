@@ -192,17 +192,6 @@ class FeedsUserProcessor extends FeedsProcessor {
         ->condition('uid', $account->uid)
         ->execute();
     }
-
-    if ($account->uid && !empty($account->openid)) {
-      $authmap = array(
-        'uid' => $account->uid,
-        'module' => 'openid',
-        'authname' => $account->openid,
-      );
-      if (SAVED_UPDATED != backdrop_write_record('authmap', $authmap, array('uid', 'module'))) {
-        backdrop_write_record('authmap', $authmap);
-      }
-    }
   }
 
   /**
@@ -404,10 +393,6 @@ class FeedsUserProcessor extends FeedsProcessor {
 
         case 'mail':
           $uid = db_query("SELECT uid FROM {users} WHERE mail = :mail", array(':mail' => $value))->fetchField();
-          break;
-
-        case 'openid':
-          $uid = db_query("SELECT uid FROM {authmap} WHERE authname = :authname AND module = 'openid'", array(':authname' => $value))->fetchField();
           break;
       }
       if ($uid) {
