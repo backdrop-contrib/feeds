@@ -622,7 +622,7 @@ class FeedsUserProcessor extends FeedsProcessor {
           // This role may *not* be assigned.
           continue;
         }
-        $entity->roles[$role->name] = $role->label;
+        $entity->roles[$role->name] = $role->name;
       }
     }
   }
