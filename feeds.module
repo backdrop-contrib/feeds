@@ -1267,8 +1267,11 @@ function feeds_source($importer_id, $feed_nid = 0) {
  */
 function feeds_plugin($plugin, $id) {
 
-  if (class_exists($plugin)) {
-    return FeedsPlugin::instance($plugin, $id, feeds_get_plugins($plugin));
+  $plugin_definition = feeds_get_plugins($plugin);
+
+  if (class_exists($plugin_definition['handler']['class'])) {
+    $handler = $plugin_definition['handler']['class'];
+    return FeedsPlugin::instance($handler, $id, feeds_get_plugins($plugin));
   }
 
   $args = array('%plugin' => $plugin, '@id' => $id);
