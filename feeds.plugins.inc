@@ -14,6 +14,7 @@ function _feeds_feeds_plugins() {
   $info = array();
   $info['FeedsPlugin'] = array(
     'hidden' => TRUE,
+    'module' => 'feeds',
     'handler' => array(
       'class' => 'FeedsPlugin',
       'file' => 'FeedsPlugin.inc',
@@ -22,6 +23,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsMissingPlugin'] = array(
     'name' => 'Missing plugin',
+    'module' => 'feeds',
     'description' => 'There is a problem with your configuration.',
     'handler' => array(
       'class' => 'FeedsMissingPlugin',
@@ -31,6 +33,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsFetcher'] = array(
     'hidden' => TRUE,
+    'module' => 'feeds',
     'handler' => array(
       'parent' => 'FeedsPlugin',
       'class' => 'FeedsFetcher',
@@ -40,6 +43,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsParser'] = array(
     'hidden' => TRUE,
+    'module' => 'feeds',
     'handler' => array(
       'parent' => 'FeedsPlugin',
       'class' => 'FeedsParser',
@@ -49,6 +53,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsProcessor'] = array(
     'hidden' => TRUE,
+    'module' => 'feeds',
     'handler' => array(
       'parent' => 'FeedsPlugin',
       'class' => 'FeedsProcessor',
@@ -58,6 +63,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsHTTPFetcher'] = array(
     'name' => 'HTTP Fetcher',
+    'module' => 'feeds',
     'description' => 'Download content from a URL.',
     'handler' => array(
       // This is the key name, not the class name.
@@ -69,6 +75,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsFileFetcher'] = array(
     'name' => 'File upload',
+    'module' => 'feeds',
     'description' => 'Upload content from a local file.',
     'handler' => array(
       'parent' => 'FeedsFetcher',
@@ -79,6 +86,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsCSVParser'] = array(
     'name' => 'CSV parser',
+    'module' => 'feeds',
     'description' => 'Parse data in Comma Separated Value format.',
     'handler' => array(
       'parent' => 'FeedsParser',
@@ -90,6 +98,7 @@ function _feeds_feeds_plugins() {
   if (extension_loaded('SimpleXML')) {
     $info['FeedsSyndicationParser'] = array(
       'name' => 'Common syndication parser',
+      'module' => 'feeds',
       'description' => 'Parse RSS and Atom feeds.',
       'help' => 'Parse XML feeds in RSS 1, RSS 2 and Atom format.',
       'handler' => array(
@@ -102,6 +111,7 @@ function _feeds_feeds_plugins() {
   }
   $info['FeedsOPMLParser'] = array(
     'name' => 'OPML parser',
+    'module' => 'feeds',
     'description' => 'Parse OPML files.',
     'handler' => array(
       'parent' => 'FeedsParser',
@@ -113,6 +123,7 @@ function _feeds_feeds_plugins() {
   if (feeds_simplepie_exists()) {
     $info['FeedsSimplePieParser'] = array(
       'name' => 'SimplePie parser',
+      'module' => 'feeds',
       'description' => 'Parse RSS and Atom feeds.',
       'help' => 'Use <a href="http://simplepie.org">SimplePie</a> to parse XML feeds in RSS 1, RSS 2 and Atom format.',
       'handler' => array(
@@ -125,6 +136,7 @@ function _feeds_feeds_plugins() {
   }
   $info['FeedsSitemapParser'] = array(
     'name' => 'Sitemap parser',
+    'module' => 'feeds',
     'description' => 'Parse Sitemap XML format feeds.',
     'handler' => array(
       'parent' => 'FeedsParser',
@@ -135,6 +147,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsNodeProcessor'] = array(
     'name' => 'Node processor',
+    'module' => 'feeds',
     'description' => 'Create and update nodes.',
     'help' => 'Create and update nodes from parsed content.',
     'handler' => array(
@@ -146,6 +159,7 @@ function _feeds_feeds_plugins() {
   );
   $info['FeedsUserProcessor'] = array(
     'name' => 'User processor',
+    'module' => 'feeds',
     'description' => 'Create users.',
     'help' => 'Create users from parsed content.',
     'handler' => array(
@@ -158,6 +172,7 @@ function _feeds_feeds_plugins() {
   if (module_exists('taxonomy')) {
     $info['FeedsTermProcessor'] = array(
       'name' => 'Taxonomy term processor',
+      'module' => 'feeds',
       'description' => 'Create taxonomy terms.',
       'help' => 'Create taxonomy terms from parsed content.',
       'handler' => array(
