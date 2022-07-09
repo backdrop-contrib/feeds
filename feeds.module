@@ -289,13 +289,13 @@ function feeds_push_unsubscribe($job) {
  *   Identifier of a FeedsImporter object.
  * @param int $feed_nid
  *   If importer is attached to content type, feed node id identifying the
- *   source to be imported.
+ *   source to be imported. Set to zero if not attached to a node.
  * @param array $context
  *   Batch context.
  *
  * @see FeedsSource::startBatchAPIJob()
  */
-function feeds_batch($method, $importer_id, $feed_nid = 0, &$context) {
+function feeds_batch($method, $importer_id, $feed_nid, &$context) {
   $context['finished'] = FEEDS_BATCH_COMPLETE;
   try {
     $context['finished'] = feeds_source($importer_id, $feed_nid)->$method();
