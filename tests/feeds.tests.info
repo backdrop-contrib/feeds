@@ -22,12 +22,6 @@ description = Tests behavior for when an importer is attached to a content type.
 group = Feeds
 file = feeds_content_type.test
 
-[FeedsDateTimeTest]
-name = FeedsDateTimeTest
-description = TBD
-group = Feeds
-file = feeds_date_time.test
-
 [FeedsFileFetcherTestCase]
 name = FeedsFileFetcherTestCase
 description = TBD
