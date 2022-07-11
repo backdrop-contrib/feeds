@@ -1687,8 +1687,6 @@ function feeds_autoload_info() {
   'FeedsTermElement' => 'plugins/FeedsParser.inc',
   'FeedsGeoTermElement' => 'plugins/FeedsParser.inc',
   'FeedsEnclosure' => 'plugins/FeedsParser.inc',
-  'FeedsDateTimeElement' => 'plugins/FeedsParser.inc',
-  'FeedsDateTime' => 'plugins/FeedsParser.inc',
   'FeedsPlugin' => 'plugins/FeedsPlugin.inc',
   'FeedsMissingPlugin' => 'plugins/FeedsPlugin.inc',
   'FeedsProcessor' => 'plugins/FeedsProcessor.inc',
