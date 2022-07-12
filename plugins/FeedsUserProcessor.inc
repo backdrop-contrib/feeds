@@ -504,7 +504,7 @@ class FeedsUserProcessor extends FeedsProcessor {
 
     $allowed_roles_options = user_roles(TRUE);
     unset($allowed_roles_options[BACKDROP_AUTHENTICATED_ROLE]);
-
+    array_walk($allowed_roles_options, function(&$label, $name) {$label = $label .  " ($name)";});
     return array(
       'allowed_roles' => array(
         '#type' => 'checkboxes',
