@@ -16,15 +16,6 @@ define('FEEDS_BLOCK_NON_EXISTENT', 'block');
  * Feeds processor plugin. Create users from feed items.
  */
 class FeedsUserProcessor extends FeedsProcessor {
-  /**
-   * Search by role label.
-   */
-  const ROLE_SEARCH_LABEL = 'label';
-
-  /**
-   * Search by role name.
-   */
-  const ROLE_SEARCH_NAME = 'name';
 
   /**
    * Unencrypted password.
@@ -454,7 +445,6 @@ class FeedsUserProcessor extends FeedsProcessor {
     $role_names = array_keys($roles);
     $role_names = array_combine($role_names, $role_names);
     return array(
-      'role_search' => self::ROLE_SEARCH_LABEL,
       'allowed_roles' => $role_names,
       'autocreate' => 0,
       'revoke_roles' => 1,
@@ -471,10 +461,6 @@ class FeedsUserProcessor extends FeedsProcessor {
     $defaults = $this->rolesListDefaults();
     $mapping += $defaults;
     $mapping['allowed_roles'] += $defaults['allowed_roles'];
-
-    // Role search.
-    $role_search_options = $this->rolesListRoleSearchOptions();
-    $options[] = t('Search roles by: <strong>@search</strong>', array('@search' => $role_search_options[$mapping['role_search']]));
 
     // Allowed roles.
     $role_labels = array();
@@ -520,18 +506,12 @@ class FeedsUserProcessor extends FeedsProcessor {
     unset($allowed_roles_options[BACKDROP_AUTHENTICATED_ROLE]);
 
     return array(
-      'role_search' => array(
-        '#type' => 'select',
-        '#title' => t('Search roles by'),
-        '#options' => $this->rolesListRoleSearchOptions(),
-        '#default_value' => $mapping['role_search'],
-      ),
       'allowed_roles' => array(
         '#type' => 'checkboxes',
         '#title' => t('Allowed roles'),
         '#options' => $allowed_roles_options,
         '#default_value' => $mapping['allowed_roles'],
-        '#description' => t('Select the roles to accept from the feed.<br />Any other roles will be ignored.'),
+        '#description' => t('Select the roles to accept from the feed. Any other roles will be ignored. Use the role\'s machine name and not the label when mapping.'),
       ),
       'autocreate' => array(
         '#type' => 'checkbox',
@@ -545,16 +525,6 @@ class FeedsUserProcessor extends FeedsProcessor {
         '#description' => t('If enabled, roles that are not provided by the feed will be revoked for the user. This affects only the "Allowed roles" as configured above.'),
         '#default_value' => $mapping['revoke_roles'],
       ),
-    );
-  }
-
-  /**
-   * Returns role list options.
-   */
-  public function rolesListRoleSearchOptions() {
-    return array(
-      self::ROLE_SEARCH_LABEL => t('Role label'),
-      self::ROLE_SEARCH_NAME => t('Role name'),
     );
   }
 
@@ -584,22 +554,7 @@ class FeedsUserProcessor extends FeedsProcessor {
         continue;
       }
 
-      switch ($mapping['role_search']) {
-        case self::ROLE_SEARCH_LABEL:
-          $role = user_role_load($value);
-          if (!$role && !empty($mapping['autocreate'])) {
-            // Create new role if role doesn't exist.
-            $role = new stdClass();
-            $role->label = $value;
-            user_role_save($role);
-            $role = user_role_load($role->label);
-          }
-          break;
-
-        case self::ROLE_SEARCH_NAME:
-          $role = user_role_load($value);
-          break;
-      }
+      $role = user_role_load($value);
 
       if ($role) {
         // Check if the role may be assigned.
