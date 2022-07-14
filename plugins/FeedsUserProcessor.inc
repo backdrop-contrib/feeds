@@ -555,6 +555,22 @@ class FeedsUserProcessor extends FeedsProcessor {
       }
 
       $role = user_role_load($value);
+      
+      if (!$role && !empty($mapping['autocreate'])) {
+        $role = new stdClass();
+        $role->name = $value;
+        // Create an arbitrary label based on the machine name.
+        // But if the machine name is an int (a Drupal 7 Role ID), then
+        // provide a default label.
+        if (!is_numeric($value)) {
+          $role->label = ucfirst(strtr($value, array('_' => ' ')));
+        } 
+        else {
+          $role->label = 'Role ' . $value;
+        }
+        user_role_save($role);
+        $role = user_role_load($role->label);
+      }
 
       if ($role) {
         // Check if the role may be assigned.
