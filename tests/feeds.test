@@ -125,6 +125,7 @@ class FeedsWebTestCase extends BackdropWebTestCase {
 
       $this->backdropPost('admin/structure/types/add', $type, 'Save content type');
       $this->assertText("The content type " . $type['name'] . " has been added.");
+
     }
   }
 
@@ -783,17 +784,6 @@ class FeedsUnitTestHelper extends BackdropUnitTestCase {
  *
  */
 class FeedsUnitTestCase extends FeedsUnitTestHelper {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getInfo() {
-    return array(
-      'name' => 'Unit tests',
-      'description' => 'Test basic low-level Feeds module functionality.',
-      'group' => 'Feeds',
-    );
-  }
 
   /**
    * Test valid absolute urls.
