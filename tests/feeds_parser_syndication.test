@@ -5,7 +5,7 @@
  * Tests for plugins/FeedsSyndicationParser.inc.
  */
 
-include_once 'feeds.test';
+include_once __DIR__ . '/feeds.test';
 
 /**
  * Test single feeds.
