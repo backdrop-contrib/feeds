@@ -34,6 +34,12 @@ jobs:
         with:
           repository: backdrop/backdrop
 
+      - name: Checkout dependency
+        uses: actions/checkout@v2
+        with:
+          repository: backdrop-contrib/job_scheduler
+          path: modules/job_scheduler
+
       - name: Checkout module
         uses: actions/checkout@v2
         with:
