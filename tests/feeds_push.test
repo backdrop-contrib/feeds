@@ -6,6 +6,7 @@
  */
 
 include_once __DIR__ . '/feeds.test';
+include_once __DIR__ . '/../libraries/PuSHSubscriber.inc';
 
 /**
  * Tests for PubSubHubbub support in feeds.
