@@ -5,8 +5,7 @@
  * Contains Feedsi18nTestCase.
  */
 
-include_once 'feeds.test';
-include_once 'feeds_mapper.test';
+include_once __DIR__ . '/feeds_mapper.test';
 
 /**
  * Tests importing data in a language.

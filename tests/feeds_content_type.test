@@ -5,6 +5,8 @@
  * Contains FeedsContentTypeTest.
  */
 
+include_once __DIR__ . '/feeds.test';
+
 /**
  * Tests for when an importer is attached to a content type.
  */
