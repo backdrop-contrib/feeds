@@ -34,11 +34,17 @@ jobs:
         with:
           repository: backdrop/backdrop
 
-      - name: Checkout dependency
+      - name: Checkout dependency job_scheduler
         uses: actions/checkout@v2
         with:
           repository: backdrop-contrib/job_scheduler
           path: modules/job_scheduler
+
+      - name: Checkout test dependency feeds_xpathparser
+        uses: actions/checkout@v2
+        with:
+          repository: backdrop-contrib/feeds_xpathparser
+          path: modules/feeds_xpathparser
 
       - name: Checkout module
         uses: actions/checkout@v2
@@ -62,4 +68,4 @@ jobs:
           core/scripts/install.sh --db-url=mysql://root:root@127.0.0.1/backdrop
 
       - name: Run functional tests
-        run: core/scripts/run-tests.sh --force --directory=modules/${{ env.REPO_NAME }} --verbose --color --concurrency=5 --cache 2>&1
+        run: core/scripts/run-tests.sh --force --directory=modules/${{ env.REPO_NAME }} --verbose --color --concurrency=4 --cache 2>&1

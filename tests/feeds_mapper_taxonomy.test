@@ -231,7 +231,7 @@ class FeedsMapperTaxonomyTestCase extends FeedsMapperTestCase {
 
     FeedsPlugin::loadMappers();
 
-    $entity = new stdClass();
+    $entity = new Node();
     $target = 'field_tags';
     $mapping = array(
       'term_search' => FEEDS_TAXONOMY_SEARCH_TERM_ID,
@@ -282,7 +282,7 @@ class FeedsMapperTaxonomyTestCase extends FeedsMapperTestCase {
 
     FeedsPlugin::loadMappers();
 
-    $entity = new stdClass();
+    $entity = new Node();
     $target = 'field_tags';
     $mapping = array(
       'term_search' => FEEDS_TAXONOMY_SEARCH_TERM_GUID,
@@ -310,26 +310,26 @@ class FeedsMapperTaxonomyTestCase extends FeedsMapperTestCase {
    */
   public function testAllowedVocabularies() {
     // Create a second vocabulary.
-    $vocabulary = new stdClass();
+    $vocabulary = new TaxonomyTerm();
     $vocabulary->name = 'Foo';
     $vocabulary->machine_name = 'foo';
     taxonomy_vocabulary_save($vocabulary);
 
     // Add a term to this vocabulary.
-    $term1 = new stdClass();
+    $term1 = new TaxonomyTerm();
     $term1->name = 'Foo1';
     $term1->vid = $vocabulary->vid;
     taxonomy_term_save($term1);
 
     // Add a term to the tags vocabulary.
-    $term2 = new stdClass();
+    $term2 = new TaxonomyTerm();
     $term2->name = 'Bar1';
     $term2->vid = 1;
     taxonomy_term_save($term2);
 
     FeedsPlugin::loadMappers();
 
-    $entity = new stdClass();
+    $entity = new Node();
     $target = 'field_tags';
     $terms = array(
       'Foo1',
@@ -494,11 +494,11 @@ class FeedsMapperTaxonomyTestCase extends FeedsMapperTestCase {
     ));
 
     // Create a few terms used in developmentseed.rss2.
-    $term1 = new stdClass();
+    $term1 = new TaxonomyTerm();
     $term1->name = 'Backdrop';
     $term1->vid = 1;
     taxonomy_term_save($term1);
-    $term2 = new stdClass();
+    $term2 = new TaxonomyTerm();
     $term2->name = 'translation';
     $term2->vid = 1;
     taxonomy_term_save($term2);
