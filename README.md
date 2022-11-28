@@ -91,37 +91,37 @@ Hidden settings
 
 Hidden settings are variables that you can define by either updating them in `feeds.settings.json` in your active configuration folder or overriding them in `settings.php` file like this example: `$config['feeds.settings']['NAME'] = VALUE;`.
 
-Name:        `feeds_debug`
-Default:     `FALSE`
+Name:        `feeds_debug`\
+Default:     `FALSE`\
 Description: Set to TRUE for enabling debug output to `/BACKDROPTMPDIR/feeds_[sitename].log`
 
-Name:        `feeds_importer_class`
-Default:     `'FeedsImporter'`
+Name:        `feeds_importer_class`\
+Default:     `'FeedsImporter'`\
 Description: The class to use for importing feeds.
 
-Name:        `feeds_source_class`
-Default:     `'FeedsSource'`
+Name:        `feeds_source_class`\
+Default:     `'FeedsSource'`\
 Description: The class to use for handling feed sources.
 
-Name:        `feeds_data_$importer_id`
-Default:     `feeds_data_$importer_id`
+Name:        `feeds_data_$importer_id`\
+Default:     `feeds_data_$importer_id`\
 Description: The table used by FeedsDataProcessor to store feed items. Usually a FeedsDataProcessor builds a table name from a prefix (feeds_data_) and the importer's id ($importer_id). This default table name can be overridden by defining a variable with the same name.
 
-Name:        `feeds_process_limit`
-Default:     `50`
+Name:        `feeds_process_limit`\
+Default:     `50`\
 Description: The number of nodes feed node processor creates or deletes in one page load.
 
-Name:        `http_request_timeout`
-Default:     `15`
+Name:        `http_request_timeout`\
+Default:     `15`\
 Description: Timeout in seconds to wait for an HTTP get request to finish.
 Note:        This setting could be overridden per importer in admin UI: `admin/structure/feeds/<your_importer>/settings/<your_fetcher> page.`
 
-Name:        `feeds_never_use_curl`
-Default:     `FALSE`
+Name:        `feeds_never_use_curl`\
+Default:     `FALSE`\
 Description: Flag to stop feeds from using its cURL for http requests. See `http_request_use_curl()`.
 
-Name:        `feeds_use_mbstring`
-Default:     `TRUE`
+Name:        `feeds_use_mbstring`\
+Default:     `TRUE`\
 Description: The extension mbstring is used to convert encodings during parsing. The reason that this can be turned off is to be able to test Feeds behavior when the extension is not available.
 
 Glossary
