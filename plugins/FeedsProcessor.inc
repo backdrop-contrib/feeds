@@ -625,7 +625,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
       return;
     }
 
-    if ($total = count($state->removeList)) {
+    if ($state->removeList !== NULL && ($total = count($state->removeList))) {
       $this->entityDeleteMultiple($state->removeList);
       $state->deleted += $total;
     }
