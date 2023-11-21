@@ -14,6 +14,7 @@ function feeds_requirements($phase) {
   $requirements = array();
 
   module_load_include('module', 'feeds');
+  module_load_include('module', 'feeds', 'includes/FeedsConfigurable');
   // Check if we have any SimplePie importers.
   $needs_simplepie = FALSE;
   foreach (feeds_importer_load_all() as $importer) {
