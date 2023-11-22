@@ -14,6 +14,7 @@ function feeds_requirements($phase) {
   $requirements = array();
 
   module_load_include('module', 'feeds');
+  // Load class because hook_autoload_info() isn't loaded at this point.
   module_load_include('module', 'feeds', 'includes/FeedsConfigurable');
   // Check if we have any SimplePie importers.
   $needs_simplepie = FALSE;
