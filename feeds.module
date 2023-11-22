@@ -909,13 +909,13 @@ function feeds_system_info_alter(array &$info, $file, $type) {
     foreach (array('fetcher', 'parser', 'processor') as $plugin_type) {
       $plugin_key = $configuration[$plugin_type]['plugin_key'];
       if (isset($module_plugins[$plugin_key])) {
-        $info['required'] = TRUE;
+        $info['disabled'] = TRUE;
         break 2;
       }
     }
   }
 
-  if (empty($info['required'])) {
+  if (empty($info['disabled'])) {
     return;
   }
 
