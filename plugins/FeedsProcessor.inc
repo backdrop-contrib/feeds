@@ -94,7 +94,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
     $languages = array(
       LANGUAGE_NONE => t('Language neutral'),
     );
-    $language_list = language_list();
+    $language_list = language_list(TRUE);
     if (count($language_list)) {
       foreach ($language_list as $language) {
         $languages[$language->langcode] = $language->name;
