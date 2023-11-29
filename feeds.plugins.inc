@@ -13,6 +13,7 @@ function _feeds_feeds_plugins() {
 
   $info = array();
   $info['FeedsPlugin'] = array(
+    'module' => 'feeds',
     'hidden' => TRUE,
     'module' => 'feeds',
     'handler' => array(
@@ -22,6 +23,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsMissingPlugin'] = array(
+    'module' => 'feeds',
     'name' => 'Missing plugin',
     'module' => 'feeds',
     'description' => 'There is a problem with your configuration.',
@@ -32,6 +34,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsFetcher'] = array(
+    'module' => 'feeds',
     'hidden' => TRUE,
     'module' => 'feeds',
     'handler' => array(
@@ -42,6 +45,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsParser'] = array(
+    'module' => 'feeds',
     'hidden' => TRUE,
     'module' => 'feeds',
     'handler' => array(
@@ -52,6 +56,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsProcessor'] = array(
+    'module' => 'feeds',
     'hidden' => TRUE,
     'module' => 'feeds',
     'handler' => array(
@@ -62,6 +67,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsHTTPFetcher'] = array(
+    'module' => 'feeds',
     'name' => 'HTTP Fetcher',
     'module' => 'feeds',
     'description' => 'Download content from a URL.',
@@ -74,6 +80,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsFileFetcher'] = array(
+    'module' => 'feeds',
     'name' => 'File upload',
     'module' => 'feeds',
     'description' => 'Upload content from a local file.',
@@ -85,6 +92,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsCSVParser'] = array(
+    'module' => 'feeds',
     'name' => 'CSV parser',
     'module' => 'feeds',
     'description' => 'Parse data in Comma Separated Value format.',
@@ -97,6 +105,7 @@ function _feeds_feeds_plugins() {
   );
   if (extension_loaded('SimpleXML')) {
     $info['FeedsSyndicationParser'] = array(
+      'module' => 'feeds',
       'name' => 'Common syndication parser',
       'module' => 'feeds',
       'description' => 'Parse RSS and Atom feeds.',
@@ -110,6 +119,7 @@ function _feeds_feeds_plugins() {
     );
   }
   $info['FeedsOPMLParser'] = array(
+    'module' => 'feeds',
     'name' => 'OPML parser',
     'module' => 'feeds',
     'description' => 'Parse OPML files.',
@@ -122,6 +132,7 @@ function _feeds_feeds_plugins() {
   );
   if (feeds_simplepie_exists()) {
     $info['FeedsSimplePieParser'] = array(
+      'module' => 'feeds',
       'name' => 'SimplePie parser',
       'module' => 'feeds',
       'description' => 'Parse RSS and Atom feeds.',
@@ -135,6 +146,7 @@ function _feeds_feeds_plugins() {
     );
   }
   $info['FeedsSitemapParser'] = array(
+    'module' => 'feeds',
     'name' => 'Sitemap parser',
     'module' => 'feeds',
     'description' => 'Parse Sitemap XML format feeds.',
@@ -146,6 +158,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsNodeProcessor'] = array(
+    'module' => 'feeds',
     'name' => 'Node processor',
     'module' => 'feeds',
     'description' => 'Create and update nodes.',
@@ -158,6 +171,7 @@ function _feeds_feeds_plugins() {
     ),
   );
   $info['FeedsUserProcessor'] = array(
+    'module' => 'feeds',
     'name' => 'User processor',
     'module' => 'feeds',
     'description' => 'Create users.',
@@ -171,6 +185,7 @@ function _feeds_feeds_plugins() {
   );
   if (module_exists('taxonomy')) {
     $info['FeedsTermProcessor'] = array(
+      'module' => 'feeds',
       'name' => 'Taxonomy term processor',
       'module' => 'feeds',
       'description' => 'Create taxonomy terms.',
