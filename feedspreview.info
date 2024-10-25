@@ -1,7 +1,8 @@
 name = Feeds Import Preview
 description = Preview the feeds source content before importing.
 package = Feeds
-core = 7.x
+backdrop = 1.x
+type = module
 dependencies[] = feeds
 
 test_dependencies[] = feeds_tamper:feeds_tamper
@@ -9,9 +10,3 @@ test_dependencies[] = feeds_tamper:feeds_tamper
 files[] = src/FeedsPreviewSource.php
 files[] = src/FeedsPreviewTable.php
 
-; Tests
-files[] = tests/src/FeedsPreviewCSVTest.test
-files[] = tests/src/FeedsPreviewFeedsTamperTest.test
-files[] = tests/src/FeedsPreviewImportFormPreviewTest.test
-files[] = tests/src/FeedsPreviewTestCase.test
-files[] = tests/src/FeedsPreviewNoImportTest.test

@@ -107,7 +107,7 @@ function feedspreview_form_submit($form, &$form_state) {
     $form_state['feeds_parser_result'] = $source->preview();
   }
   catch (Exception $e) {
-    drupal_set_message($e->getMessage(), 'error');
+    backdrop_set_message($e->getMessage(), 'error');
   }
   $form_state['rebuild'] = TRUE;
 }
@@ -121,12 +121,12 @@ function feedspreview_form_submit($form, &$form_state) {
  *   The parser result.
  *
  * @return array
- *   A build array in the format expected by drupal_render().
+ *   A build array in the format expected by backdrop_render().
  */
 function feedspreview_table(FeedsSource $feeds_source, FeedsParserResult $result) {
   // Check the result's source.
   if (empty($result->items)) {
-    drupal_set_message(t('No result.'));
+    backdrop_set_message(t('No result.'));
     return;
   }
 

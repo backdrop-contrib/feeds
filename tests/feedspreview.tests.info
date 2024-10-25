@@ -1,0 +1,29 @@
+[FeedsPreviewCSVTest]
+name = Feeds Preview CSV Test
+description = FeedsPreviewCSVTest
+group = Feeds Preview
+file = src/FeedsPreviewCSVTest.test
+
+[FeedsPreviewFeedsTamperTest]
+name = Feeds Preview Feeds Tamper Test
+description = FeedsPreviewFeedsTamperTest
+group = Feeds Preview
+file = src/FeedsPreviewFeedsTamperTest.test
+
+[FeedsPreviewImportFormPreviewTest]
+name = Feeds Preview Import Form Preview Test
+description = FeedsPreviewImportFormPreviewTest
+group = Feeds Preview
+file = src/FeedsPreviewImportFormPreviewTest.test
+
+[FeedsPreviewTestCase]
+name = Feeds Preview Test Case
+description = FeedsPreviewTestCase
+group = Feeds Preview
+file = src/FeedsPreviewTestCase.test
+
+[FeedsPreviewNoImportTest]
+name = Feeds Preview No Import Test
+description = FeedsPreviewNoImportTest
+group = Feeds Preview
+file = src/FeedsPreviewNoImportTest.test

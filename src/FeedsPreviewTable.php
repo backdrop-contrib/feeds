@@ -92,7 +92,7 @@ class FeedsPreviewTable {
    *   Defaults to FALSE.
    *
    * @return array
-   *   A build array in the format expected by drupal_render().
+   *   A build array in the format expected by backdrop_render().
    */
   public function getBaseTable($reset = FALSE) {
     if (!$reset && !empty($this->baseTable)) {
@@ -212,7 +212,7 @@ class FeedsPreviewTable {
    *   The parser result.
    *
    * @return array
-   *   A build array in the format expected by drupal_render().
+   *   A build array in the format expected by backdrop_render().
    */
   public function build(FeedsParserResult $result) {
     if (empty($result->items)) {
@@ -222,8 +222,8 @@ class FeedsPreviewTable {
     $build = array();
 
     $build['#attached'] = array(
-      'css' => array(drupal_get_path('module', 'feedspreview') . '/css/feedspreview.css'),
-      'js' => array(drupal_get_path('module', 'feedspreview') . '/js/feedspreview.js'),
+      'css' => array(backdrop_get_path('module', 'feedspreview') . '/css/feedspreview.css'),
+      'js' => array(backdrop_get_path('module', 'feedspreview') . '/js/feedspreview.js'),
     );
     $build['buttons'] = $this->buildButtons();
     $build['summary'] = $this->buildResultSummary($result->items);
@@ -236,7 +236,10 @@ class FeedsPreviewTable {
         ),
       ),
     );
-    drupal_add_js($js_settings, 'setting');
+    backdrop_add_js($js_settings, 'setting');
+    backdrop_add_icons(array(
+      'warning',
+    ));
 
     return $build;
   }
@@ -245,7 +248,7 @@ class FeedsPreviewTable {
    * Returns a build array for buttons next and previous.
    *
    * @return array
-   *   A build array in the format expected by drupal_render().
+   *   A build array in the format expected by backdrop_render().
    */
   public function buildButtons() {
     return array(
@@ -293,7 +296,7 @@ class FeedsPreviewTable {
    *   The items to display.
    *
    * @return array
-   *   A build array in the format expected by drupal_render().
+   *   A build array in the format expected by backdrop_render().
    */
   public function buildResultSummary(array $items) {
     $total = count($items);
@@ -328,7 +331,7 @@ class FeedsPreviewTable {
    *   The items to display.
    *
    * @return array
-   *   A build array in the format expected by drupal_render().
+   *   A build array in the format expected by backdrop_render().
    */
   public function buildItems(array $items) {
     $build = array();
@@ -352,7 +355,7 @@ class FeedsPreviewTable {
    *   The number of the item in the list.
    *
    * @return array
-   *   A build array in the format expected by drupal_render().
+   *   A build array in the format expected by backdrop_render().
    */
   public function buildItem(array $item, $index) {
     $table = $this->getBaseTable();
@@ -420,7 +423,7 @@ class FeedsPreviewTable {
           '#theme' => 'item_list',
           '#items' => $value,
         );
-        $output = drupal_render($list);
+        $output = backdrop_render($list);
       }
     }
 

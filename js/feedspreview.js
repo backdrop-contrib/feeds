@@ -7,20 +7,20 @@
   /**
    * Process controls.
    */
-  Drupal.behaviors.feedsPreviewControls = {
+  Backdrop.behaviors.feedsPreviewControls = {
     attach: function (context) {
 
       // Process previous link.
       $('.feeds-preview-controls-previous:not(.feeds-preview-controls-previous-processed)', context).addClass('feeds-preview-controls-previous-processed').each(function() {
         var previewID = $(this).attr('id').replace('feeds-preview-controls-previous-', '');
         $(this).click(function() {
-          Drupal.feedsPreview.prev({ "previewID": previewID });
+          Backdrop.feedsPreview.prev({ "previewID": previewID });
           return false;
         });
 
         $(document).keydown(function(element) {
           if (element.which == 37) {
-            Drupal.feedsPreview.prev({ "previewID": previewID });
+            Backdrop.feedsPreview.prev({ "previewID": previewID });
           }
         });
       });
@@ -29,13 +29,13 @@
       $('.feeds-preview-controls-next:not(.feeds-preview-controls-next-processed)', context).addClass('feeds-preview-controls-next-processed').each(function() {
         var previewID = $(this).attr('id').replace('feeds-preview-controls-next-', '');
         $(this).click(function() {
-          Drupal.feedsPreview.next({ "previewID": previewID });
+          Backdrop.feedsPreview.next({ "previewID": previewID });
           return false;
         });
 
         $(document).keydown(function(element) {
           if (element.which == 39) {
-            Drupal.feedsPreview.next({ "previewID": previewID });
+            Backdrop.feedsPreview.next({ "previewID": previewID });
           }
         });
       });
@@ -45,7 +45,7 @@
   /**
    * Collapse content.
    */
-  Drupal.behaviors.feedsPreviewCollapseLongContent = {
+  Backdrop.behaviors.feedsPreviewCollapseLongContent = {
     attach: function (context) {
       // Add "Read more" links for every text that is too long.
       $('.feeds-preview-long-content:not(.feeds-preview-long-content-processed)', context).addClass('feeds-preview-long-content-processed').each(function() {
@@ -55,11 +55,11 @@
         // Create more link.
         var link = document.createElement('a');
         $(link).attr('href', '#')
-        $(link).append(Drupal.t('Read more'));
+        $(link).append(Backdrop.t('Read more'));
         $(this).after(link);
 
         $(link).click(function() {
-          Drupal.feedsPreview.toggle(this, current);
+          Backdrop.feedsPreview.toggle(this, current);
           return false;
         });
       });
@@ -69,7 +69,7 @@
   /**
    * Feeds Preview object.
    */
-  Drupal.feedsPreview = Drupal.feedsPreview || {};
+  Backdrop.feedsPreview = Backdrop.feedsPreview || {};
 
   /**
    * Toggler.
@@ -78,23 +78,23 @@
    *
    * @todo add slide effect?
    */
-  Drupal.feedsPreview.toggle = function (trigger, element, event) {
+  Backdrop.feedsPreview.toggle = function (trigger, element, event) {
     if ($(element).hasClass('collapsed')) {
       $(element).removeClass('collapsed');
       $(trigger).contents().remove();
-      $(trigger).append(Drupal.t('Close'));
+      $(trigger).append(Backdrop.t('Close'));
     }
     else {
       $(element).addClass('collapsed');
       $(trigger).contents().remove();
-      $(trigger).append(Drupal.t('Read more'));
+      $(trigger).append(Backdrop.t('Read more'));
     }
   };
 
   /**
    * Go to a particular item.
    */
-  Drupal.feedsPreview.goTo = function (itemNum, options) {
+  Backdrop.feedsPreview.goTo = function (itemNum, options) {
     // Remove active class from items.
     $('.feeds-preview-table-' + options.previewID).removeClass('active');
 
@@ -103,15 +103,15 @@
 
     $('#feeds-preview-result-summary-current-' + options.previewID).text(itemNum + 1);
 
-    Drupal.settings.feedsPreview[options.previewID].activeItem = itemNum;
+    Backdrop.settings.feedsPreview[options.previewID].activeItem = itemNum;
   };
 
   /**
    * Shows previous item.
    */
-  Drupal.feedsPreview.prev = function (options) {
+  Backdrop.feedsPreview.prev = function (options) {
     // Get the current active item.
-    var itemNum = Drupal.settings.feedsPreview[options.previewID].activeItem;
+    var itemNum = Backdrop.settings.feedsPreview[options.previewID].activeItem;
 
     // If we are on the first item then show the last item.
     // Otherwise show the previous item.
@@ -128,9 +128,9 @@
   /**
    * Shows next item.
    */
-  Drupal.feedsPreview.next = function (options) {
+  Backdrop.feedsPreview.next = function (options) {
     // Get the current active item.
-    var itemNum = Drupal.settings.feedsPreview[options.previewID].activeItem;
+    var itemNum = Backdrop.settings.feedsPreview[options.previewID].activeItem;
     var total = $('.feeds-preview-table-' + options.previewID).length;
 
     // If we are on the last item then activate the first item.

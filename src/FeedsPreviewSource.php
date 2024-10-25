@@ -55,10 +55,10 @@ class FeedsPreviewSource extends FeedsSource {
       'fetcher_result' => isset($this->fetcher_result) ? $this->fetcher_result : FALSE,
     );
     if (db_query_range("SELECT 1 FROM {feedspreview_source} WHERE id = :id", 0, 1, array(':id' => $this->id))->fetchField()) {
-      drupal_write_record('feedspreview_source', $object, array('id'));
+      backdrop_write_record('feedspreview_source', $object, array('id'));
     }
     else {
-      drupal_write_record('feedspreview_source', $object);
+      backdrop_write_record('feedspreview_source', $object);
     }
   }
 
@@ -71,8 +71,8 @@ class FeedsPreviewSource extends FeedsSource {
     if ($record = db_query("SELECT imported, config, state, fetcher_result FROM {feedspreview_source} WHERE id = :id", array(':id' => $this->id))->fetchObject()) {
       // While FeedsSource cannot be exported, we still use CTool's export.inc
       // export definitions.
-      ctools_include('export');
-      $this->export_type = EXPORT_IN_DATABASE;
+      // ctools_include('export');
+      // $this->export_type = EXPORT_IN_DATABASE;
       $this->imported = $record->imported;
       $this->config = unserialize($record->config);
       if (!empty($record->state)) {

@@ -41,7 +41,8 @@
 }
 
 .feeds-preview-table-row-not-mapped td.feeds-preview-table-target-column {
-  background-image: url('../images/message-16-warning.png');
+  background-image: var(--icon-warning);
   background-repeat: no-repeat;
-  background-position: right 9px;
+  background-position: right;
+  background-size: 1em;
 }
