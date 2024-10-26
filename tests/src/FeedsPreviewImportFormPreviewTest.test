@@ -5,6 +5,8 @@
  * Contains FeedsPreviewPreviewTest.
  */
 
+include_once __DIR__ . '/FeedsPreviewTestCase.test';
+
 /**
  * Tests previewing on the import form.
  */
@@ -19,22 +21,11 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
   /**
    * {@inheritdoc}
    */
-  public static function getInfo() {
-    return array(
-      'name' => 'Import form preview',
-      'description' => 'Tests if an import can be previewed on the import form.',
-      'group' => 'FeedsPreview',
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp($modules = array()) {
     parent::setUp($modules);
 
     // Create content type.
-    $this->contentType = $this->drupalCreateContentType(array());
+    $this->contentType = $this->backdropCreateContentType(array());
 
     // Create and configure importer.
     // Set to run import process as often as possible.
@@ -80,7 +71,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     $this->assertNodeCount(0, 'No nodes have been created yet.');
 
     // And import.
-    $this->drupalPost(NULL, array(), 'Import');
+    $this->backdropPost(NULL, array(), 'Import');
 
     // Assert that nodes have been created.
     $this->assertText('Created 2 nodes');
@@ -99,7 +90,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     $this->assertNodeCount(0, 'No nodes have been created yet.');
 
     // And import.
-    $this->drupalPost(NULL, array(), 'Import');
+    $this->backdropPost(NULL, array(), 'Import');
 
     // Assert that nodes have been created.
     $this->assertText('Created 2 nodes');
@@ -130,7 +121,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     $edit = array(
       'files[feeds]' => $this->absolutePath() . '/tests/resources/content.csv',
     );
-    $this->drupalPost('import/csv', $edit, 'Import');
+    $this->backdropPost('import/csv', $edit, 'Import');
     $this->assertText('Created 2 nodes');
 
     // Change the titles of the nodes so we can check if the existing source
@@ -156,7 +147,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     $this->assertEqual('Ut wisi enim ad minim veniam', $node->title);
 
     // Reload the form and ensure the existing source is displayed.
-    $this->drupalGet('import/csv');
+    $this->backdropGet('import/csv');
     $this->assertText('content.csv');
   }
 
@@ -181,9 +172,9 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
 
     // Import a source.
     $edit = array(
-      'feeds[FeedsHTTPFetcher][source]' => $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'feedspreview') . '/tests/resources/content.csv',
+      'feeds[FeedsHTTPFetcher][source]' => $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content.csv',
     );
-    $this->drupalPost('import/csv', $edit, 'Import');
+    $this->backdropPost('import/csv', $edit, 'Import');
     $this->assertText('Created 2 nodes');
 
     // Change the titles of the nodes so we can check if the existing source
@@ -196,7 +187,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     node_save($node);
 
     // Preview the content2.csv in which all values except guid were changed.
-    $url = $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'feedspreview') . '/tests/resources/content2.csv';
+    $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content2.csv';
     $this->previewImportUrl('import/csv', $url);
     $this->assertText('Nam liber tempor');
 
@@ -209,7 +200,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     $this->assertEqual('Ut wisi enim ad minim veniam', $node->title);
 
     // Reload the form and ensure the existing source is displayed.
-    $this->drupalGet('import/csv');
-    $this->assertFieldByName('feeds[FeedsHTTPFetcher][source]', $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'feedspreview') . '/tests/resources/content.csv');
+    $this->backdropGet('import/csv');
+    $this->assertFieldByName('feeds[FeedsHTTPFetcher][source]', $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content.csv');
   }
 }

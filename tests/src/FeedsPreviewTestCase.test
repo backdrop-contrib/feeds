@@ -5,6 +5,8 @@
  * Contains FeedsPreviewTestCase.
  */
 
+module_load_include('test', 'feeds', 'tests/feeds');
+
 /**
  * Base class for FeedsPreview tests.
  */
@@ -27,7 +29,7 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
    * Returns absolute path to FeedsPreview module instead.
    */
   public function absolutePath() {
-    return $this->absolute() . '/' . drupal_get_path('module', 'feedspreview');
+    return $this->absolute() . '/' . backdrop_get_path('module', 'feedspreview');
   }
 
   /**
@@ -54,7 +56,7 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
     $edit += array(
       'files[feeds]' => $file,
     );
-    $this->drupalPost($path, $edit, $submit);
+    $this->backdropPost($path, $edit, $submit);
 
     // Assert that a preview is shown.
     $this->assertRaw('feeds-preview-table');
@@ -75,13 +77,13 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
    */
   protected function previewImportUrl($path, $url = NULL, $edit = array(), $submit = 'Preview') {
     if (is_null($url)) {
-      $url = $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'feedspreview') . '/tests/resources/content.csv';
+      $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content.csv';
     }
 
     $edit += array(
       'feeds[FeedsHTTPFetcher][source]' => $url,
     );
-    $this->drupalPost($path, $edit, $submit);
+    $this->backdropPost($path, $edit, $submit);
 
     // Assert that a preview is shown.
     $this->assertRaw('feeds-preview-table');

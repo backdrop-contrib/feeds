@@ -1,29 +1,23 @@
 [FeedsPreviewCSVTest]
-name = Feeds Preview CSV Test
-description = FeedsPreviewCSVTest
+name = Preview CSV files
+description = Tests previewing data using the CSV parser.
 group = Feeds Preview
 file = src/FeedsPreviewCSVTest.test
 
 [FeedsPreviewFeedsTamperTest]
-name = Feeds Preview Feeds Tamper Test
-description = FeedsPreviewFeedsTamperTest
+name = Feeds Tamper integration
+description = Tests compatibility with Feeds Tamper.
 group = Feeds Preview
 file = src/FeedsPreviewFeedsTamperTest.test
 
 [FeedsPreviewImportFormPreviewTest]
-name = Feeds Preview Import Form Preview Test
-description = FeedsPreviewImportFormPreviewTest
+name = Import form preview
+description = Tests if an import can be previewed on the import form.
 group = Feeds Preview
 file = src/FeedsPreviewImportFormPreviewTest.test
 
-[FeedsPreviewTestCase]
-name = Feeds Preview Test Case
-description = FeedsPreviewTestCase
-group = Feeds Preview
-file = src/FeedsPreviewTestCase.test
-
 [FeedsPreviewNoImportTest]
-name = Feeds Preview No Import Test
-description = FeedsPreviewNoImportTest
+name = No import on cron
+description = 'Tests if previewing import doesn\'t trigger an import on cron.'
 group = Feeds Preview
 file = src/FeedsPreviewNoImportTest.test

@@ -5,27 +5,19 @@
  * Contains FeedsPreviewNoImportTest.
  */
 
+include_once __DIR__ . '/FeedsPreviewTestCase.test';
+
 /**
  * Tests if previewing import doesn't trigger an import on cron.
  */
 class FeedsPreviewNoImportTest extends FeedsPreviewTestCase {
-  /**
-   * {@inheritdoc}
-   */
-  public static function getInfo() {
-    return array(
-      'name' => 'No import on cron',
-      'description' => 'Tests if previewing import doesn\'t trigger an import on cron.',
-      'group' => 'FeedsPreview',
-    );
-  }
 
   /**
    * Tests if no nodes are imported after cron run, after preview.
    */
   public function test() {
     // Create content type.
-    $content_type = $this->drupalCreateContentType(array());
+    $content_type = $this->backdropCreateContentType(array());
 
     // Create and configure importer.
     // Set to run import process as often as possible.
@@ -58,7 +50,7 @@ class FeedsPreviewNoImportTest extends FeedsPreviewTestCase {
     $this->previewImportFile('admin/structure/feeds/csv/preview', NULL, array(), 'Preview import');
 
     // Run cron.
-    drupal_cron_run();
+    backdrop_cron_run();
 
     // Assert that no nodes were created.
     $this->assertNodeCount(0, 'No nodes were imported (actual: @actual).');

@@ -1,5 +1,7 @@
 <?php
 
+include_once __DIR__ . '/FeedsPreviewTestCase.test';
+
 /**
  * Tests previewing data when using the CSV parser.
  */
@@ -8,22 +10,11 @@ class FeedsPreviewCSVTest extends FeedsPreviewTestCase {
   /**
    * {@inheritdoc}
    */
-  public static function getInfo() {
-    return array(
-      'name' => 'Preview CSV files',
-      'description' => 'Tests previewing data using the CSV parser.',
-      'group' => 'FeedsPreview',
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function setUp($modules = array()) {
     parent::setUp($modules);
 
     // Create content type.
-    $content_type = $this->drupalCreateContentType(array());
+    $content_type = $this->backdropCreateContentType(array());
 
     // Create and configure importer.
     // Set to run import process as often as possible.

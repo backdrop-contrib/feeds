@@ -1,21 +1,10 @@
 <?php
 
+include_once __DIR__ . '/FeedsPreviewTestCase.test';
 /**
  * Tests in combination with Feeds Tamper.
  */
 class FeedsPreviewFeedsTamperTest extends FeedsPreviewTestCase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function getInfo() {
-    return array(
-      'name' => 'Feeds Tamper integration',
-      'description' => 'Tests compatibility with Feeds Tamper.',
-      'group' => 'FeedsPreview',
-      'dependencies' => array('feeds_tamper'),
-    );
-  }
 
   /**
    * {@inheritdoc}
@@ -25,7 +14,7 @@ class FeedsPreviewFeedsTamperTest extends FeedsPreviewTestCase {
     parent::setUp($modules);
 
     // Create content type.
-    $content_type = $this->drupalCreateContentType(array());
+    $content_type = $this->backdropCreateContentType(array());
 
     // Create and configure importer.
     $this->createImporterConfiguration('Syndication', 'syndication');
@@ -55,7 +44,7 @@ class FeedsPreviewFeedsTamperTest extends FeedsPreviewTestCase {
       ),
     ));
 
-    $url = $GLOBALS['base_url'] . '/' . drupal_get_path('module', 'feedspreview') . '/tests/resources/drupalplanet.rss2';
+    $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/drupalplanet.rss2';
     $this->previewImportUrl('import/syndication', $url);
 
     // Assert that all sources are displayed in the UI.
