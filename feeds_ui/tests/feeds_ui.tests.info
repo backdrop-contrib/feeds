@@ -1,0 +1,5 @@
+[FeedsUIUserInterfaceTestCase]
+name = Feeds UI user interface
+description = 'Tests Feeds Admin UI module\'s GUI.'
+group = Feeds
+file = feeds_ui.test
