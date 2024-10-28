@@ -31,7 +31,7 @@ class FeedsPreviewSource extends FeedsSource {
   /**
    * Overrides FeedsSource::save().
    *
-   * Saves records to feedspreview_source table instead.
+   * Saves records to feeds_preview_source table instead.
    */
   public function save() {
     // Alert implementers of FeedsSourceInterface to the fact that we're saving.
@@ -54,21 +54,21 @@ class FeedsPreviewSource extends FeedsSource {
       'state' => isset($this->state) ? $this->state : FALSE,
       'fetcher_result' => isset($this->fetcher_result) ? $this->fetcher_result : FALSE,
     );
-    if (db_query_range("SELECT 1 FROM {feedspreview_source} WHERE id = :id", 0, 1, array(':id' => $this->id))->fetchField()) {
-      backdrop_write_record('feedspreview_source', $object, array('id'));
+    if (db_query_range("SELECT 1 FROM {feeds_preview_source} WHERE id = :id", 0, 1, array(':id' => $this->id))->fetchField()) {
+      backdrop_write_record('feeds_preview_source', $object, array('id'));
     }
     else {
-      backdrop_write_record('feedspreview_source', $object);
+      backdrop_write_record('feeds_preview_source', $object);
     }
   }
 
   /**
    * Overrides FeedsSource::load().
    *
-   * Loads records from feedspreview_source table instead.
+   * Loads records from feeds_preview_source table instead.
    */
   public function load() {
-    if ($record = db_query("SELECT imported, config, state, fetcher_result FROM {feedspreview_source} WHERE id = :id", array(':id' => $this->id))->fetchObject()) {
+    if ($record = db_query("SELECT imported, config, state, fetcher_result FROM {feeds_preview_source} WHERE id = :id", array(':id' => $this->id))->fetchObject()) {
       // While FeedsSource cannot be exported, we still use CTool's export.inc
       // export definitions.
       // ctools_include('export');
@@ -90,7 +90,7 @@ class FeedsPreviewSource extends FeedsSource {
   /**
    * Overrides FeedsSource::delete().
    *
-   * Delete configuration from feedspreview_source instead.
+   * Delete configuration from feeds_preview_source instead.
    */
   public function delete() {
     // Alert implementers of FeedsSourceInterface to the fact that we're
@@ -98,7 +98,7 @@ class FeedsPreviewSource extends FeedsSource {
     foreach ($this->importer->plugin_types as $type) {
       $this->importer->$type->sourceDelete($this);
     }
-    db_delete('feedspreview_source')
+    db_delete('feeds_preview_source')
       ->condition('id', $this->id)
       ->execute();
   }

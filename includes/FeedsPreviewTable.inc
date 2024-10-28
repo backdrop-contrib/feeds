@@ -222,8 +222,8 @@ class FeedsPreviewTable {
     $build = array();
 
     $build['#attached'] = array(
-      'css' => array(backdrop_get_path('module', 'feedspreview') . '/css/feedspreview.css'),
-      'js' => array(backdrop_get_path('module', 'feedspreview') . '/js/feedspreview.js'),
+      'css' => array(backdrop_get_path('module', 'feeds') . '/css/feeds_preview.css'),
+      'js' => array(backdrop_get_path('module', 'feeds') . '/js/feeds_preview.js'),
     );
     $build['buttons'] = $this->buildButtons();
     $build['summary'] = $this->buildResultSummary($result->items);

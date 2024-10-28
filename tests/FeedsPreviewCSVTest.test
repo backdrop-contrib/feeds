@@ -58,7 +58,7 @@ class FeedsPreviewCSVTest extends FeedsPreviewTestCase {
     ));
 
     // Preview file using the file fetcher.
-    $this->previewImportFile('import/csv', $this->absolutePath() . '/tests/resources/content_uppercase_cols.csv');
+    $this->previewImportFile('import/csv', $this->absolutePath() . '/tests/resources/preview/content_uppercase_cols.csv');
 
     // Assert that everything has a value and no targets are missing.
     $this->assertNoText('Missing');

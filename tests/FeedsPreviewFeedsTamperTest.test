@@ -44,7 +44,7 @@ class FeedsPreviewFeedsTamperTest extends FeedsPreviewTestCase {
       ),
     ));
 
-    $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/drupalplanet.rss2';
+    $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feeds') . '/tests/resources/preview/drupalplanet.rss2';
     $this->previewImportUrl('import/syndication', $url);
 
     // Assert that all sources are displayed in the UI.

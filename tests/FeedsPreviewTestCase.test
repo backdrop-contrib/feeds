@@ -5,7 +5,7 @@
  * Contains FeedsPreviewTestCase.
  */
 
-module_load_include('test', 'feeds', 'tests/feeds');
+include_once __DIR__ . '/feeds.test';
 
 /**
  * Base class for FeedsPreview tests.
@@ -15,21 +15,10 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
    * {@inheritdoc}
    */
   public function setUp($modules = array()) {
-    $modules[] = 'feedspreview';
-    $modules = array_unique($modules);
     parent::setUp($modules);
 
     // Include FeedsProcessor.inc so processor related constants are available.
     module_load_include('inc', 'feeds', 'plugins/FeedsProcessor');
-  }
-
-  /**
-   * Overrides FeedsWebTestCase::absolutePath().
-   *
-   * Returns absolute path to FeedsPreview module instead.
-   */
-  public function absolutePath() {
-    return $this->absolute() . '/' . backdrop_get_path('module', 'feedspreview');
   }
 
   /**
@@ -47,7 +36,7 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
    */
   protected function previewImportFile($path, $file = NULL, $edit = array(), $submit = 'Preview') {
     if (is_null($file)) {
-      $file = $this->absolutePath() . '/tests/resources/content.csv';
+      $file = $this->absolutePath() . '/tests/resources/preview/content.csv';
     }
 
     $this->assertTrue(file_exists($file), format_string('Source file @file exists', array(
@@ -77,7 +66,7 @@ abstract class FeedsPreviewTestCase extends FeedsWebTestCase {
    */
   protected function previewImportUrl($path, $url = NULL, $edit = array(), $submit = 'Preview') {
     if (is_null($url)) {
-      $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content.csv';
+      $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedsew') . '/tests/resources/preview/content.csv';
     }
 
     $edit += array(

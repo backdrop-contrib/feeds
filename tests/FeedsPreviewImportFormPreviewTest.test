@@ -119,7 +119,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
 
     // Import a source.
     $edit = array(
-      'files[feeds]' => $this->absolutePath() . '/tests/resources/content.csv',
+      'files[feeds]' => $this->absolutePath() . '/tests/resources/preview/content.csv',
     );
     $this->backdropPost('import/csv', $edit, 'Import');
     $this->assertText('Created 2 nodes');
@@ -134,7 +134,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     node_save($node);
 
     // Preview the content2.csv in which all values except guid were changed.
-    $file = $this->absolutePath() . '/tests/resources/content2.csv';
+    $file = $this->absolutePath() . '/tests/resources/preview/content2.csv';
     $this->previewImportFile('import/csv', $file);
     $this->assertText('Nam liber tempor');
 
@@ -172,7 +172,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
 
     // Import a source.
     $edit = array(
-      'feeds[FeedsHTTPFetcher][source]' => $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content.csv',
+      'feeds[FeedsHTTPFetcher][source]' => $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feeds') . '/tests/resources/preview/content.csv',
     );
     $this->backdropPost('import/csv', $edit, 'Import');
     $this->assertText('Created 2 nodes');
@@ -187,7 +187,7 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
     node_save($node);
 
     // Preview the content2.csv in which all values except guid were changed.
-    $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content2.csv';
+    $url = $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feeds') . '/tests/resources/preview/content2.csv';
     $this->previewImportUrl('import/csv', $url);
     $this->assertText('Nam liber tempor');
 
@@ -201,6 +201,6 @@ class FeedsPreviewImportFormPreviewTest extends FeedsPreviewTestCase {
 
     // Reload the form and ensure the existing source is displayed.
     $this->backdropGet('import/csv');
-    $this->assertFieldByName('feeds[FeedsHTTPFetcher][source]', $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feedspreview') . '/tests/resources/content.csv');
+    $this->assertFieldByName('feeds[FeedsHTTPFetcher][source]', $GLOBALS['base_url'] . '/' . backdrop_get_path('module', 'feeds') . '/tests/resources/preview/content.csv');
   }
 }
