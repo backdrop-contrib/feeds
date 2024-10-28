@@ -8,6 +8,7 @@
 /**
  * Class of a cached item.
  */
+#[AllowDynamicProperties]
 class FeedsHTTPCacheItem {
 
   /**
