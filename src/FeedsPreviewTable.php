@@ -261,7 +261,7 @@ class FeedsPreviewTable {
       'previous' => array(
         '#type' => 'container',
         'button' => array(
-          '#markup' => '<a href="#" class="button button-default">' . t('Previous') . '</a>',
+          '#markup' => '<a href="#" class="button">' . t('Previous') . '</a>',
         ),
         '#attributes' => array(
           'class' => array(
@@ -275,7 +275,7 @@ class FeedsPreviewTable {
       'next' => array(
         '#type' => 'container',
         'button' => array(
-          '#markup' => '<a href="#" class="button button-default">' . t('Next') . '</a>',
+          '#markup' => '<a href="#" class="button">' . t('Next') . '</a>',
         ),
         '#attributes' => array(
           'class' => array(
