@@ -270,7 +270,7 @@ class FeedsSource extends FeedsConfigurable {
    *   The account switcher to use to be able to perform actions as a different
    *   user.
    */
-  public static function instance($importer_id, $feed_nid, FeedsAccountSwitcherInterface $account_switcher = NULL) {
+  public static function instance($importer_id, $feed_nid, ?FeedsAccountSwitcherInterface $account_switcher = NULL) {
     $class = config_get('feeds.settings', 'feeds_source_class');
 
     $instances = &backdrop_static(__METHOD__, array());
@@ -293,7 +293,7 @@ class FeedsSource extends FeedsConfigurable {
    *   The account switcher to use to be able to perform actions as a different
    *   user.
    */
-  protected function __construct($importer_id, $feed_nid, FeedsAccountSwitcherInterface $account_switcher = NULL) {
+  protected function __construct($importer_id, $feed_nid, ?FeedsAccountSwitcherInterface $account_switcher = NULL) {
     $this->feed_nid = $feed_nid;
     $this->importer = feeds_importer($importer_id);
     if (is_null($account_switcher)) {
