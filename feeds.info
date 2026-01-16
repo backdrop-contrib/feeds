@@ -4,4 +4,3 @@ package = Feeds
 backdrop = 1.x
 type = module
 dependencies[] = job_scheduler
-dependencies[] = system (>=1.33)
