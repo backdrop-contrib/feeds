@@ -266,7 +266,7 @@ class FeedsSource extends FeedsConfigurable {
    *   The machine name of the importer.
    * @param int $feed_nid
    *   The node id of a feed node if the source is attached to a feed node.
-   * @param FeedsAccountSwitcherInterface $account_switcher
+   * @param ?FeedsAccountSwitcherInterface $account_switcher
    *   The account switcher to use to be able to perform actions as a different
    *   user.
    */
@@ -289,7 +289,7 @@ class FeedsSource extends FeedsConfigurable {
    * @param int $feed_nid
    *   The feed node ID for this Feeds source. This should be '0' if the
    *   importer is not attached to a content type.
-   * @param FeedsAccountSwitcherInterface $account_switcher
+   * @param ?FeedsAccountSwitcherInterface $account_switcher
    *   The account switcher to use to be able to perform actions as a different
    *   user.
    */
