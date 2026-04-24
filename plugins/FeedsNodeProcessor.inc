@@ -146,7 +146,7 @@ class FeedsNodeProcessor extends FeedsProcessor {
   /**
    * Validates a node.
    */
-  protected function entityValidate($entity, FeedsSource $source = NULL) {
+  protected function entityValidate($entity, ?FeedsSource $source = NULL) {
     // Set or correct user ID.
     if (!isset($entity->uid) || !is_numeric($entity->uid)) {
       $entity->uid = $this->config['author'];
