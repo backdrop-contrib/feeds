@@ -8,7 +8,6 @@
  * Creates file entities from feed items.
  */
 class FeedsFileProcessor extends FeedsProcessor {
-  protected $debug;
 
   /**
    * Define entity type.
@@ -36,13 +35,11 @@ class FeedsFileProcessor extends FeedsProcessor {
    *   A new entity object.
    */
   protected function newEntity(FeedsSource $source) {
-    $file = new stdClass();
+    $file = new File(array());
     $file->type = $this->config['bundle'] ? $this->config['bundle'] : FILE_TYPE_NONE;
     $file->timestamp = REQUEST_TIME;
     $file->uid = $this->config['author'];
     $file->status = FILE_STATUS_PERMANENT;
-
-    $this->debug($file, 'newEntity');
 
     return $file;
   }
@@ -67,11 +64,10 @@ class FeedsFileProcessor extends FeedsProcessor {
     }
     else {
       // We're replacing the existing file. Only load what's absolutely necessary.
-      $file = db_query("SELECT fid, type, status, uri FROM {file_managed} WHERE fid = :fid", array(':fid' => $fid))->fetchObject();
+      $data = db_query("SELECT fid, type, status, uri, filename, filemime, filesize, uid, timestamp FROM {file_managed} WHERE fid = :fid", array(':fid' => $fid))->fetchAssoc();
+      $file = new File($data);
       $file->uid = $this->config['author'];
     }
-
-    $this->debug($file, 'entityLoad');
 
     return $file;
   }
@@ -117,11 +113,11 @@ class FeedsFileProcessor extends FeedsProcessor {
 
       if (empty($entity->fid)) {
         $op = 'create';
-        $access = file_entity_access($op, $entity->type, $author);
+        $access = file_access($op, $entity->type, $author);
       }
       else {
         $op = 'update';
-        $access = file_entity_access($op, $entity, $author);
+        $access = file_access($op, $entity, $author);
       }
 
       if (!$access) {
@@ -138,9 +134,6 @@ class FeedsFileProcessor extends FeedsProcessor {
    *   Entity to be saved.
    */
   public function entitySave($entity) {
-    $this->debug($entity, 'entitySave');
-    dpm($entity->uri);
-
     if (!file_is_local($entity)) {
       $file = FALSE;
       try {
@@ -157,7 +150,10 @@ class FeedsFileProcessor extends FeedsProcessor {
 
     // TODO: What if it's local but not in the Backdrop path?
     // file_default_scheme() . ':/'
-    if (is_a($entity, 'File')) {
+    if (is_object($entity)) {
+      // Ensure the file is permanent.
+      $entity->status = FILE_STATUS_PERMANENT;
+      // Backdrop file_save() expects an object with at least uri.
       file_save($entity);
     }
     else {
@@ -180,7 +176,7 @@ class FeedsFileProcessor extends FeedsProcessor {
       $uri = file_build_uri($entity->filename);
 
       // Now to its new home.
-      if (is_a($entity, 'File')) {
+      if (is_object($entity)) {
         $file = file_move($entity, $uri, FILE_EXISTS_RENAME);
         return $file;
       }
@@ -219,7 +215,6 @@ class FeedsFileProcessor extends FeedsProcessor {
       'bundle' => $type,
       'author' => 0,
       'authorize' => TRUE,
-      'debug' => array(),
     ) + parent::configDefaults();
   }
 
@@ -245,26 +240,6 @@ class FeedsFileProcessor extends FeedsProcessor {
       '#title' => t('Authorize'),
       '#description' => t('Check that the author has permission to create the file.'),
       '#default_value' => $this->config['authorize'],
-    );
-
-    $debug_options = array(
-      'newEntity' => 'newEntity',
-      'entityLoad' => 'entityLoad',
-      'entitySave' => 'entitySave',
-      'setTargetElement' => 'setTargetElement',
-      'existingEntityId' => 'existingEntityId',
-    );
-    $form['debug_fieldset'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Debug'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
-    $form['debug_fieldset']['debug'] = array(
-      '#type' => 'checkboxes',
-      '#title' => t('Debug query'),
-      '#options' => $debug_options,
-      '#default_value' => isset($this->config['debug']) ? $this->config['debug'] : array(),
     );
 
     return $form;
@@ -336,11 +311,10 @@ class FeedsFileProcessor extends FeedsProcessor {
    * Override setTargetElement to operate on a target item that is a file.
    */
   public function setTargetElement(FeedsSource $source, $target_file, $target_element, $value) {
-    $this->debug(array($source, $target_file, $target_element, $value), 'setTargetElement');
-
     switch ($target_element) {
       case 'uri':
         if (isset($value)) {
+          $target_file->uri = $value;
           // There will be aFID if the URI already exists.
           $query = db_select('file_managed', 'f')
             ->fields('f', array('fid'))
@@ -357,9 +331,6 @@ class FeedsFileProcessor extends FeedsProcessor {
             $target_file->filesize = $file->filesize;
             $target_file->status = $file->status;
           }
-        }
-        else {
-          $target_file->uri = $value;
         }
         break;
       case 'user_name':
@@ -389,8 +360,8 @@ class FeedsFileProcessor extends FeedsProcessor {
     // Iterate through all unique targets and test whether they do already
     // exist in the database.
     $unique_targets = $this->uniqueTargets($source, $result);
-    $this->debug($unique_targets, 'existingEntityId');
 
+    $fid = 0;
     foreach ($unique_targets as $target => $value) {
       switch ($target) {
         case 'fid':
@@ -426,21 +397,5 @@ class FeedsFileProcessor extends FeedsProcessor {
       }
     }
     return 0;
-  }
-
-  protected function debug($item, $source) {
-    if (!isset($this->debug)) {
-      $debug = isset($this->config['debug']) ? $this->config['debug'] : array();
-      $this->debug = array_keys(array_filter($debug));
-    }
-
-    if (in_array($source, $this->debug)) {
-      $o = '<ul>';
-      foreach ($item as $key => $val) {
-        $o .= '<li>' . check_plain($key) . ' => ' . check_plain(var_export($val, TRUE)) . '</li>';
-      }
-      $o .= '</ul>';
-      backdrop_set_message($source . ':' . $o);
-    }
   }
 }
