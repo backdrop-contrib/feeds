@@ -70,7 +70,9 @@ class FeedsHTTPCacheItem {
           break;
 
         default:
-          $this->$key = $response->$key;
+          if (property_exists($this, $key) || TRUE) {
+            $this->$key = $response->$key;
+          }
       }
     }
   }

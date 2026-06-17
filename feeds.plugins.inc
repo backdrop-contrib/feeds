@@ -161,11 +161,22 @@ function _feeds_feeds_plugins() {
     'name' => 'User processor',
     'module' => 'feeds',
     'description' => 'Create users.',
-    'help' => 'Create users from parsed content.',
+    'help' => 'Create and update user accounts from parsed content.',
     'handler' => array(
       'parent' => 'FeedsProcessor',
       'class' => 'FeedsUserProcessor',
       'file' => 'FeedsUserProcessor.inc',
+      'path' => $path,
+    ),
+  );
+  $info['FeedsFileProcessor'] = array(
+    'name' => 'File processor',
+    'description' => 'Create and update file entities.',
+    'help' => 'Create and update files from parsed content.',
+    'handler' => array(
+      'parent' => 'FeedsProcessor',
+      'class' => 'FeedsFileProcessor',
+      'file' => 'FeedsFileProcessor.inc',
       'path' => $path,
     ),
   );
@@ -174,7 +185,7 @@ function _feeds_feeds_plugins() {
       'name' => 'Taxonomy term processor',
       'module' => 'feeds',
       'description' => 'Create taxonomy terms.',
-      'help' => 'Create taxonomy terms from parsed content.',
+      'help' => 'Create and update taxonomy terms from parsed content.',
       'handler' => array(
         'parent' => 'FeedsProcessor',
         'class' => 'FeedsTermProcessor',
