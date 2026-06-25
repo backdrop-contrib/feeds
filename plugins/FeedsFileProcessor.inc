@@ -197,10 +197,7 @@ class FeedsFileProcessor extends FeedsProcessor {
    *   Array of unique identity ids to be deleted.
    */
   protected function entityDeleteMultiple($fids) {
-    $files = file_load_multiple($fids);
-    foreach ($files as $file) {
-      file_delete($file);
-    }
+    file_delete_multiple($fids);
   }
 
   /**
