@@ -1630,6 +1630,48 @@ function feeds_api_version() {
   return 1;
 }
 
+/**
+ * Returns a file object which can be passed to file_save().
+ *
+ * @param string $uri
+ *   A string containing the URI, path, or filename.
+ * @param bool $use_existing
+ *   (Optional) If TRUE and there's an existing file in the {file_managed}
+ *   table with the passed in URI, then that file object is returned.
+ *   Otherwise, a new file object is returned. Default is TRUE.
+ *
+ * @return object|bool
+ *   A file object, or FALSE on error.
+ *
+ * @todo This should probably be named
+ *   file_load_by_uri($uri, $create_if_not_exists).
+ * @todo Remove this function when http://drupal.org/node/685818 is fixed.
+ */
+function _feeds_file_uri_to_object($uri, $use_existing = TRUE) {
+  $file = FALSE;
+  $uri = file_stream_wrapper_uri_normalize($uri);
+
+  if ($use_existing) {
+    // We should always attempt to re-use a file if possible.
+    $files = entity_load('file', FALSE, array('uri' => $uri));
+    $file = !empty($files) ? reset($files) : FALSE;
+  }
+
+  if (empty($file)) {
+    $file = new stdClass();
+    $file->uid = $GLOBALS['user']->uid;
+    $file->filename = drupal_basename($uri);
+    $file->uri = $uri;
+    $file->filemime = file_get_mimetype($uri);
+    // This is gagged because some uris will not support it.
+    $file->filesize = @filesize($uri);
+    $file->timestamp = REQUEST_TIME;
+    $file->status = FILE_STATUS_PERMANENT;
+  }
+
+  return $file;
+}
+
 function feeds_load_importer_object($importer_id = NULL) {
   $table = 'feeds_importer';
 
@@ -1727,6 +1769,7 @@ function feeds_autoload_info() {
   'FeedsSyndicationParser' => 'plugins/FeedsSyndicationParser.inc',
   'FeedsTermProcessor' => 'plugins/FeedsTermProcessor.inc',
   'FeedsUserProcessor' => 'plugins/FeedsUserProcessor.inc',
+  'FeedsFileProcessor' => 'plugins/FeedsFileProcessor.inc',
 
   // Views
   'feeds_views_handler_argument_importer_id' => 'views/feeds_views_handler_argument_importer_id.inc',
