@@ -189,17 +189,22 @@ class FeedsUserProcessor extends FeedsProcessor {
    * Delete multiple user accounts.
    */
   protected function entityDeleteMultiple($uids) {
+    $item_ids = $uids;
     // Prevent user 1 from being deleted.
     if (in_array(1, $uids)) {
       $uids = array_diff($uids, array(1));
-
-      // But do delete the associated feeds item.
+    }
+    if ($uids) {
+      user_delete_multiple($uids);
+    }
+    // Always drop tracking rows, including for user 1 and for UIDs whose
+    // accounts are already gone (hook_entity_delete never runs then).
+    if ($item_ids) {
       db_delete('feeds_item')
         ->condition('entity_type', $this->entityType())
-        ->condition('entity_id', 1)
+        ->condition('entity_id', $item_ids, 'IN')
         ->execute();
     }
-    user_delete_multiple($uids);
   }
 
   /**

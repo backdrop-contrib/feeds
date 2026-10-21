@@ -334,6 +334,30 @@ abstract class FeedsProcessor extends FeedsPlugin {
   abstract protected function entityDeleteMultiple($entity_ids);
 
   /**
+   * Deletes imported entities and their feeds_item tracking rows.
+   *
+   * Tracking rows are removed even when the entity is already gone, because
+   * hook_entity_delete() does not run in that case.
+   *
+   * @param array $entity_ids
+   *   Entity IDs previously imported by this source.
+   * @param FeedsSource $source
+   *   The source that imported the items.
+   */
+  protected function deleteImportedItems(array $entity_ids, FeedsSource $source) {
+    if (!$entity_ids) {
+      return;
+    }
+    $this->entityDeleteMultiple($entity_ids);
+    db_delete('feeds_item')
+      ->condition('entity_type', $this->entityType())
+      ->condition('id', $this->id)
+      ->condition('feed_nid', $source->feed_nid)
+      ->condition('entity_id', $entity_ids, 'IN')
+      ->execute();
+  }
+
+  /**
    * Wrapper around entity_get_info().
    *
    * The entity_get_info() function is wrapped so that extending classes can
@@ -656,7 +680,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
 
     // Delete a batch of entities.
     $entity_ids = $select->range(0, $this->getLimit())->execute()->fetchCol();
-    $this->entityDeleteMultiple($entity_ids);
+    $this->deleteImportedItems($entity_ids, $source);
 
     // Report progress, take into account that we may not have deleted as many
     // items as we have counted at first.
@@ -746,7 +770,7 @@ abstract class FeedsProcessor extends FeedsPlugin {
     // Delete a batch of entities.
     $entity_ids = $select->range(0, $this->getLimit())->execute()->fetchCol();
     if ($entity_ids) {
-      $this->entityDeleteMultiple($entity_ids);
+      $this->deleteImportedItems($entity_ids, $source);
       $state->deleted += count($entity_ids);
       $state->progress($state->total, $state->deleted);
     }
